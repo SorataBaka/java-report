@@ -1,0 +1,129 @@
+４J　24番　クリスティアン　ハルジュノ　テーマ０２　レポート
+
+1. レポート用紙で提出しました。
+
+2. 今回のJavaプログラムを, 元金をコマンドライン引数から入力できるように改造せよ. (ソース Koza2.java を作成し, レポートファイルに貼付け, コンパイル方法・実行方法と実行結果も貼付け)
+a. ソースファイル名をKoza2.javaにした.
+b. ソースコードを記載した.
+
+ファイル名　Koza2.java
+
+class Koza2 {
+    double riritsu;
+    int gankin;
+
+    Koza2(int gankinInit) {
+        //後で定義するではなく、このクラスを発生するとき、gankin変数の値をすぐ定義する
+        riritsu = 0.01;
+        gankin = gankinInit;
+    }
+    // 最も効率がいいコード。それだけではなく、新しい変数を発生することが必要はありません。
+    double risoku(int month){
+        return (double)gankin * riritsu * (double)month/12;
+    }
+    public static void main (String[] args){
+        if(args.length == 0){
+            System.out.println("args が入力されませんでした。");
+            System.exit(-1);
+            return;
+        }
+        //1 行のコードですべてがすっきりします
+        int gankin = Integer.parseInt(args[0]);
+        Koza2 my_koza = new Koza2(gankin);
+        System.out.println("my_kozaの値は　" + my_koza);
+        double kotae = my_koza.risoku(6);
+        
+        System.out.println("利息は"+ kotae);
+        System.exit(0);
+    }
+}
+
+c. コンパイル方法・実行方法
+$ javac Koza2.java
+$ java Koza2 {元金の値}
+例：java Koza2 10000
+
+d. 実行結果
+$ java Koza2 20000
+my_kozaの値は　Koza2@279f2327
+利息は100.0
+
+3. C言語版のKoza_risoku関数の引数にある「struct Koza *koza」や, kekkaの計算式中の「koza->」が, Java版では不要で, とてもシンプルな記述となっている. その理由を推測せよ. (レポートファイルに記入)
+Java言語で全変数がオオブジェクト指向ので、ポインターを利用する必要はありません。さらに、メモリ安全のため、（担当してないメモリアドレスをアクセスすること）Java言語でポインターが存在していません。
+
+4. 課題3より, Javaにおける「クラス(class)」とはプログラムコード的にどの様なものか, 自分の考えをまとめよ. 論理的に考えること(「〜が〜なので, クラスとは〜ものと考えられる.」の形式で答える.) (レポートファイルに記入) 
+くらすの内に、色々な情報や変数または関数があるので、くらすとはC言語のStructと似ているものと考えられる。
+
+5. Java版の預金口座プログラムを, さらに自由に改造してみよ. 特に何も思い浮かばなければ, 6カ月に固定されている箇所を, ループで1カ月～12カ月に変化させてみよ. ファイル名・クラス名はKoza3とする. (ソース, コンパイル方法・実行方法, 実行結果, 改造した内容の説明をレポート)
+a. ソースファイル名をKoza3.javaにした.
+b. ソースコードを記載した.
+
+ファイル名　Koza3.java
+
+class Koza3 {
+    double riritsu;
+    int gankin;
+
+    Koza3(int gankinInit) {
+        //後で定義するではなく、このクラスを発生するとき、gankin変数の値をすぐ定義する
+        riritsu = 0.01;
+        gankin = gankinInit;
+    }
+    // 最も効率がいいコード。それだけではなく、新しい変数を発生することが必要はありません。
+    double risoku(int month){
+        return (double) gankin * riritsu * (double)month/12;
+    }
+    public static void main (String[] args){
+        try {
+            if(args.length == 0 || args.length > 2){
+                System.out.println("使い方：java Koza3 {gankin} {months}");
+                throw new Exception("args が正しく入力されませんでした。");
+            }
+            //1 行のコードですべてがすっきりします
+            int gankin = Integer.parseInt(args[0]);
+            int months = Integer.parseInt(args[1]);
+
+            if(gankin < 0 || months < 1) throw new Exception("入力に間違いがあります。");
+
+            Koza3 my_koza = new Koza3(gankin);
+            System.out.println("my_kozaの値は　" + my_koza);
+
+            double kotae = my_koza.risoku(months);
+            String formattedString = String.format("利息は %.2f", kotae);
+            System.out.println(formattedString);
+            System.exit(0);
+            
+        } catch (Exception e){
+            System.out.println(e);
+            System.exit(-1);
+        }
+    }
+}
+c. コンパイル方法・実行方法
+$ javac Koza3.java
+$ java Koza3 {元金の値} {数月}
+例：java Koza3 10000 5
+
+d. 実行結果
+
+正しく入力すれば
+$ java Koza3 10000 5
+my_kozaの値は　Koza3@279f2327
+利息は 41.67
+
+正しくない入力すれば
+$ java Koza3
+使い方：java Koza3 {gankin} {getsu}
+java.lang.Exception: args が正しく入力されませんでした。
+
+$ java Koza3 10000 -5
+java.lang.Exception: 入力に間違いがあります。
+
+$ java Koza3 -10000 5
+java.lang.Exception: 入力に間違いがあります。
+
+e. 改造した内容の説明
+指定された引数が間違っている場合の入力サニタイズ
+プログラムの実行中にすべてのエラーを処理する。 （例：整数以外の入力）
+クラス変数を初期化後ではなく初期化時に設定します。
+結果を表示するときの文字列の書式設定
