@@ -1,0 +1,138 @@
+４J　24番　クリスティアン　ハルジュノ　テーマ０３　レポート
+1. 以下の仕様を満たす, 数学のベクトルを表すクラスを作れ. ただし, mainメソッドは課題2で別に作るため, 実行には課題2が必要である. (ソースVector2D.javaを作成し, レポートファイルに貼付け) 
+
+ファイル名 Vector2D.java
+
+class Vector2D {
+    public double x;
+    public double y;
+    Vector2D(double newX, double newY){
+        this.x = newX;
+        this.y = newY;
+    }
+    //printメソッドを引数なし・戻り値なし
+    void print(){
+        System.out.println(String.format("X=%.02f", this.x));
+        System.out.println(String.format("Y=%.02f", this.y));
+        return;
+    }
+}
+
+2. 以下の仕様で, 課題1で作成したベクトルクラスを使うmainメソッドのみを含むクラスを作れ. (ソースVector2DApp.java及びコンパイル方法・実行方法, 実行結果をレポートファイルに貼付け) 
+
+
+ファイル名 Vector2DApp.java
+
+class Vector2DApp {
+    public static void main(String[] args){
+        Vector2D a = new Vector2D(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        a.print();
+    }
+}
+
+
+コンパイル方法・実行方法
+$ javac Vector2DApp.java
+$ java Vector2DApp {X} {Y}
+例：java Vector2DApp 1.5 2.0
+
+実行結果
+$ java Vector2DApp 1.5 2.5
+X=1.50
+Y=2.50
+
+
+3. 課題2で作成したmain内の, 手順5番の直下に続けて, 以下のコードを追加せよ. (ソースVector2DApp.java及び実行結果をレポートファイルに貼付け)
+
+注意: 課題2のコードと混ぜて書くのではない.
+    1. Vector2D型のオブジェクト変数bを宣言する.
+    2. b = a; ※この通りに書くこと (newはしない)
+    3. bのx成分とy成分に, args[2]とargs[3]から適当な値をそれぞれ代入する.
+    4. bに対してprintメソッドを呼び出すことで, bのx, y成分を表示する.
+    5. 再び, aに対してprintメソッドを呼び出すことで, aのx, y成分を表示する. 
+
+class Vector2DApp {
+    public static void main(String[] args){
+        Vector2D a = new Vector2D(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        Vector2D b = a;
+        b.x = Double.parseDouble(args[2]);
+        b.y = Double.parseDouble(args[3]);
+
+        System.out.println("Vector2D型の変数b");
+        b.print();
+
+        System.out.println("Vector2D型の変数a");
+        a.print();
+
+
+    }
+}
+
+実行結果
+
+$ javac Vector2DApp.java && java Vector2DApp 1.5 2.5 3.5 4.5
+X=1.50
+Y=2.50
+Vector2D型の変数b
+X=3.50
+Y=4.50
+Vector2D型の変数a
+X=3.50
+Y=4.50
+
+5. 今回作成したベクトルクラスに, ベクトル同士の内積を求めるメソッドや, 加算・減算を行うメソッド, 大きさ(ノルム)を求めるメソッドなど, 機能を自由に追加してみよ. 
+
+ファイル名 Vector2D.java
+
+class Vector2D {
+    public double x;
+    public double y;
+    Vector2D(double newX, double newY){
+        this.x = newX;
+        this.y = newY;
+    }
+    void print(){
+        System.out.println(String.format("X=%.02f", this.x));
+        System.out.println(String.format("Y=%.02f", this.y));
+        return;
+    }
+    double magnitude(){
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+    void flipHorizontal(){
+        this.y = -1 * this.y;
+    }
+    void flipVertical(){
+        this.x = -1 * this.x;
+    }
+    void add(Vector2D additionVector){
+        this.x += additionVector.x;
+        this.y += additionVector.y;
+    }
+    void subtract(Vector2D subtractionVector){
+        this.x -= subtractionVector.x;
+        this.y -= subtractionVector.y;
+    }
+    double innerProduct(Vector2D secondVector){
+        return (this.x * secondVector.x) + (this.y * secondVector.y);
+    }
+}
+
+説明
+double magnitude()
+ベクトルの大きさを計算関数。
+
+void flipHorizontal()
+x軸で回転関数
+
+void flipVertical()
+y軸で回転関数
+
+void add(Vector2D additionVector)
+本ベクトルに他のベクトルを足す
+
+void subtract(Vector2D subtractionVector)
+本ベクトルから他のベクトルを引く
+
+double innerProduct(Vector2D secondVector)
+本ベクトルの内積を計算関数
