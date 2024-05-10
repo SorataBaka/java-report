@@ -1,0 +1,113 @@
+４J　24番　クリスティアン　ハルジュノ　テーマ０４　レポート
+1. 以下の仕様を満たす, 数学のベクトルを表すクラスを作れ. ただし, mainメソッドは課題2で別に作るため, 実行には課題2が必要である. (ソースVector2D.javaを作成し, レポートファイルに貼付け) 
+
+ファイル名 Vector2D.java　（コンストラクタ部分）
+class Vector2D {
+    public double x;
+    public double y;
+    Vector2D(double newX, double newY){
+        this.x = newX;
+        this.y = newY;
+    }
+    。。。。。
+}
+ファイル名　Vector2DApp.java
+
+class Vector2DApp {
+    public static void main(String[] args){
+        Vector2D a = new Vector2D(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        a.print();
+    }
+}
+
+実行結果
+$ javac Vector2DApp.java
+$ java Vector2DApp 12 12
+X=12.00
+Y=12.00
+
+説明
+今回の実験ではコマンドラインから入力した値をmain関数から直接に設定ではなく、Vector2Dクラスを初期化されたとき、コマンドラインから入力した２つの値をコンストラクタからクラスの。コンストラクタとは、クラスを初期化するときにすぐ実行する関数である。初期化では、コンストラクタで設定した通り、代入したい値をすぐ初期化部分"new クラス名(ここ)"に入れる。
+コンストラクタ関数（クラス名と同じ名前関数）で、さっきに入れた値を使って、クラスの中にある変数に設定する。
+
+2. Vector2Dクラスに, 以下の仕様を満たす「ノルム計算メソッド」を追加せよ. また, mainメソッドにもそれを呼び出して動作をテストするコードを追加せよ. (ノルム計算メソッド部分のコード, mainのコード, 実行結果を貼り付け) 
+
+ノルマ計算関数部分　（引数なし、戻り値はdouble型）
+double magnitude(){
+    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+}
+
+mainコード　（計算結果を表示する）
+class Vector2DApp {
+    public static void main(String[] args){
+        Vector2D a = new Vector2D(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        a.print();
+
+        double mag =  a.magnitude();
+        System.out.println(mag);
+    }
+}
+
+実行結果
+$ javac Vector2DApp.java
+$ java Vector2DApp 12 12
+X=12.00
+Y=12.00
+16.97056274847714
+
+
+3. Vector2Dクラスに, 以下の仕様を満たす「ベクトル減算メソッド」を追加せよ. また, mainメソッドにもそれを呼び出して動作をテストするコードを追加せよ. (ベクトル減算メソッド部分のコード, mainのコード, 実行結果を貼り付け) 
+
+減算メッソド部分（引数はVector2Dクラスノオブジェクト変数を一つ、戻り値なし）
+void subtract(Vector2D subtractionVector){
+    this.x -= subtractionVector.x;
+    this.y -= subtractionVector.y;
+}
+
+mainコード（printメソッド呼び出し）
+class Vector2DApp {
+    public static void main(String[] args){
+        Vector2D a = new Vector2D(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        Vector2D b = new Vector2D(Double.parseDouble(args[2]), Double.parseDouble(args[3]));
+
+        a.print();
+        a.subtract(b);
+        a.print();
+    }
+}
+
+実行結果
+$ javac Vector2DApp.java
+$ java Vector2DApp 12 12 6 6
+X=12.00
+Y=12.00
+X=6.00
+Y=6.00
+
+4. 以上で作成した「ノルム計算メソッド」と「ベクトル減算メソッド」を用いて, 2点間の距離を計算するmainメソッドを作成せよ. 特に新しいメソッドは追加せず, mainメソッドのみで行うこと. (完成したmainメソッド, 実行結果を貼り付け, 動作の説明を記入) 
+
+mainコード
+
+class Vector2DApp {
+    public static void main(String[] args){
+        Vector2D a = new Vector2D(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
+        Vector2D b = new Vector2D(Double.parseDouble(args[2]), Double.parseDouble(args[3]));
+        a.print();
+        a.subtract(b);
+        double distance = a.magnitude();
+        System.out.println(distance);
+    }
+}
+実行結果
+$ javac Vector2DApp.java
+$ java Vector2DApp 12 12 6 6
+X=12.00
+Y=12.00
+8.48528137423857
+
+説明
+main関数で、２つのベクトルを作成した。そのベクトルでは点のx軸とy軸の市場を存在している。２つの点の距離をできるように、まず、一つのベクトルの値から他のベクトルの値を減算する。ベクトルの減算はx軸引くx軸、y軸ひくy軸。減算したベクトルをノルマ計算関数を呼び出して、２つの点の距離を出してくる。
+
+5. 課題2のcalcNormメソッドの引数や戻り値より, C言語による手続き指向プログラミングでの「関数呼び出し」と, Javaによるオブジェクト指向プログラミングでの「メソッド呼び出し」における, 「データの流れ」についての根本的な考え方の違いを考察せよ. 
+
+C言語では、オブジェクトということはなくて、あるオブジェクトみたいのものも、じぶんで関数を持っていない（Struct）。それから、関数を呼び出すとき、毎回パラメータを代入しなければできません。それに対して、Java言語では、全部の変数や値はオブジェクト型である。Java言語であるオブジェクトは自分の関数も持っている。一つのオブジェクトに、関数や変数を混ぜておいてある。オブジェクトにある関数は本オブジェクトの値をアクセスができる。それから、処理関数を呼び出すときに、パラメータを代入しなくても実行できる。
