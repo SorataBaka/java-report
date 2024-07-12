@@ -1,0 +1,134 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ０９　レポート
+1. 【準備】これまでに作成した高専生クラスは複雑に成り過ぎてしまったため, 「継承」の実習を目的として, 改めて以下の仕様を満たすシンプルな高専生クラス(Kosensei.java)を用意せよ. また, その動作をテストするmain (KosenseiApp.java)も作成せよ. (mainを含めてプログラム全体, 実行結果をレポート)
+
+ファイル名: Kosensei.java
+public class Kosensei {
+    private String name;
+    private int year;
+    private String department;
+
+    public Kosensei(String name, int year, String department){
+        this.name = name;
+        this.year = year;
+        this.department = department;
+    }
+    public void intro(){
+        System.out.println(String.format("私は、%d年%sの%sでございます。", this.year, this.department, this.name));
+    }
+    public int getYear(){
+        return this.year;
+    }
+    public String getDepartment(){
+        return this.department;
+    }
+    public String getName(){
+        return this.name;
+    }
+}
+ファイル名: Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Kosensei student = new Kosensei("Chris", 4, "情報");
+        student.intro();
+    }
+}
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ javac Kosenseiapp.java
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ java Kosenseiapp
+私は、4年情報のChrisでございます。
+
+2. 課題1の高専生クラスから継承させて, 以下の仕様を満たす通学生クラス(Tsusei.java)を作成せよ. 自己紹介は, スーパークラスの各フィールドをゲットして, 通学手段と一緒にまとめて表示すること. また, 通学生クラスの動作をテストするmain (TsuseiApp.java)も作成せよ. mainにはTsuseiのみ登場させること. (mainを含めてプログラム全体, 実行結果をレポート)
+
+ファイル名：Tsusei.java
+public class Tsusei extends Kosensei {
+    private String tsugaku;
+    public Tsusei(String name, int year, String department, String tsugaku){
+        super(name, year, department);
+        this.tsugaku = tsugaku;
+    }
+    public String getTsugaku(){
+        return this.tsugaku;
+    }
+    public void intro(){
+        String introString = String.format("私は、%d年%sの%sでございます。毎日%sで学校へ行きます。", this.getYear(), this.getDepartment(), this.getName(), this.tsugaku);
+        System.out.println(introString);
+    }
+}
+ファイル名：TsuseiApp.java
+public class TsuseiApp {
+    public static void main(String args[]){
+        Tsusei student = new Tsusei("クリス", 4, "情報", "歩く");
+        student.intro();
+    }
+}
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ javac TsuseiApp.java
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ java TsuseiApp
+私は、4年情報のクリスでございます。毎日歩くで学校へ行きます。
+
+3. 課題1の高専生クラスから継承させて, 以下の仕様を満たす寮生クラス(Ryosei.java)を作成せよ. また, その動作をテストするmain (RyoseiApp.java)も作成せよ. (mainを含めてプログラム全体, 実行結果をレポート)
+
+ファイル名：Ryosei.java
+public class Ryosei extends Kosensei {
+    private Ryosei doshitsusha;
+    public Ryosei(String name, int year, String department){
+        super(name, year, department);
+        this.doshitsusha = null;
+    }
+    public void intro(){
+        String doshitsushaNamae = this.doshitsusha == null ? "なし" : this.doshitsusha.getName();
+        String introString = String.format("私は、%d年%sの%sでございます。%sと同室しています。", this.getYear(), this.getDepartment(), this.getName(), doshitsushaNamae);
+        System.out.println(introString);
+    }
+    public void setDoshitsusha(Ryosei student){
+        this.doshitsusha = student;
+        if(student.getDoshitsusha() == this) return; //無限的に繰り返さないように
+        student.setDoshitsusha(this);
+    }
+    public Ryosei getDoshitsusha(){
+        return this.doshitsusha;
+    }
+}
+ファイル名：RyoseiApp.java
+public class RyoseiApp {
+    public static void main(String[] args){
+        Ryosei student = new Ryosei("クリス", 4, "情報");
+        student.intro();
+        Ryosei doshitsusha = new Ryosei("バチカ", 4, "建築");
+        student.setDoshitsusha(doshitsusha);
+        doshitsusha.setDoshitsusha(student);
+        student.intro();
+        doshitsusha.intro();
+    }
+}
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ javac RyoseiApp.java
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ java RyoseiApp
+私は、4年情報のクリスでございます。なしと同室しています。
+私は、4年情報のクリスでございます。バチカと同室しています。
+私は、4年建築のバチカでございます。クリスと同室しています。
+
+4. 課題3で作成した寮生クラスでは, mainから同室者のセットを片方(一人分)だけしか行わないと, データ構造に矛盾が起こる. これを, 片方の同室者をセットするだけで, 自動的にもう片方の同室者もセットされ, 相互参照となるように改造せよ. また, その動作をテストするmainも作成せよ. (setDoshitsushaメソッドのコードと, 実行結果をレポート)
+
+ファイル名：Ryosei.java (setDoshitsushaの部分だけ)
+    public void setDoshitsusha(Ryosei student){
+        this.doshitsusha = student;
+        if(student.getDoshitsusha() == this) return; //無限的に繰り返さないように
+        student.setDoshitsusha(this);
+    }
+ファイル名：RyoseiApp.java
+public class RyoseiApp {
+    public static void main(String[] args){
+        Ryosei student = new Ryosei("クリス", 4, "情報");
+        Ryosei doshitsusha = new Ryosei("バチカ", 4, "建築");
+        student.setDoshitsusha(doshitsusha);
+        student.intro();
+        doshitsusha.intro();
+    }
+}
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ javac RyoseiApp.java
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ java RyoseiApp
+私は、4年情報のクリスでございます。バチカと同室しています。
+私は、4年建築のバチカでございます。クリスと同室しています。
+

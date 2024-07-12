@@ -1,0 +1,325 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ０８　レポート
+
+1. テーマ06で作成したKosenseiクラスのフィールドをprivate化し, アクセサーを追加せよ. ゲッターは対応するフィールドの値をそのまま返す(return)だけで良い. セッターではそれぞれ値のチェックを行い, 釧路高専本科の学生としてあり得ない値はセットできなくすること. mainにはそのセット機能をテストする内容を記述せよ. (プログラム全体, 実行結果, 動作テストの説明をレポート) 
+
+ファイル名: Kosensei.java
+import java.util.Arrays;
+class Kosensei {
+    private String name;
+    private int year;
+    private String department;
+    private String address;
+
+    Kosensei(){
+        this.year = 0;
+        this.department = "未定";
+        this.name = "未定";
+        this.address = "未定";
+    }
+    void intro(){
+        System.out.println(String.format("私は、%d年%sの%sでございます。現在、私は%sに住んでいます。", this.year, this.department, this.name, this.address));
+    }
+
+    void setYear(int year){
+        if (year < 1 || year > 5) return;
+        this.year = year;
+        return;
+    }
+    int getYear(){
+        return this.year;
+    }
+    void setDepartment(String departmentName){
+        String[] validDepartments = {"情報", "機械", "電気", "電子", "建築"};
+        if(Arrays.asList(validDepartments).indexOf(departmentName) == -1) return;
+        this.department = departmentName;
+        return;
+    }
+    String getDepartment(){
+        return this.department;
+    }
+    void setName(String name){
+        this.name = name;
+        return;
+    }
+    String getName(){
+        return this.name;
+    }
+    void setAddress(String address){
+        this.address = address;
+        return;
+    }
+    String getAddress(){
+        return this.address;
+    }
+}
+
+ファイル名: Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Kosensei student = new Kosensei();
+        student.intro();
+        System.out.println("\n\n制限ないの値のテスト");
+        student.setName("クリス"); 
+        student.setAddress("釧路");
+        student.intro();
+
+        System.out.println("\n\n制限ありの学年のテスト");
+        student.setYear(-1); //ここで値が変わらない。
+        student.intro();
+        student.setYear(4); //ここで値が変わる
+        student.intro();
+
+        System.out.println("\n\n制限ありの分野のテスト");
+        student.setDepartment("数学"); //ここで値が変わらない。
+        student.intro();
+        student.setDepartment("機械"); //ここで値が変わる。
+        student.intro();
+        return;
+    }
+}
+
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-8/src$ javac Kosenseiapp.java && java Kosenseiapp
+私は、0年未定の未定でございます。現在、私は未定に住んでいます。
+
+
+制限ないの値のテスト
+私は、0年未定のクリスでございます。現在、私は釧路に住んでいます。
+
+
+制限ありの学年のテスト
+私は、0年未定のクリスでございます。現在、私は釧路に住んでいます。
+私は、4年未定のクリスでございます。現在、私は釧路に住んでいます。
+
+
+制限ありの分野のテスト
+私は、4年未定のクリスでございます。現在、私は釧路に住んでいます。
+私は、4年機械のクリスでございます。現在、私は釧路に住んでいます。
+
+説明
+名前と住所の値に、制限がないので、なんの値でも入力できる。しかし、学年で入力できる値は
+１から５までしかないので、−１を代入してみると、クラス内のフィールドが全然変われませんでした。
+４を代入すると、ルールを満たすので、クラス内のフィールドが変わります。また、分野の値にも
+制限があって、”数学”を代入してみると、入力できる値の配列にがないので、クラス内のフィールド
+が変われません。さらに、”機械”という値を入力してみると、代入できる値の配列に存在しているので、
+クラス内の値が変わります。
+
+2. Kosenseiクラスとは全く別に, スマホを表すSumahoクラスを定義せよ. フィールドには少なくともString型の, スマホの「名前」を含め, スマホの名前のアクセサーを定義すること. その他のフィールドやアクセサー, 値の制限などは自分で自由に決めて良い(例えば画面サイズやメモリ容量など). mainにはSumahoクラスの機能をテストする内容を記述せよ. (****自分で決めた制限の説明****, Sumahoクラスのプログラム全体, 実行結果をレポート.) 
+説明
+スマホの名前の制限はRegexを使って、ルールを決められます。
+^[A-Z][A-Za-z0-9]{3,9}$
+そのパターンを分解して、次のようになる。
+^[A-Z]　　 　　　　文字列の最初の文字は必ず大文字とする。
+[A-Za-z0-9]{3,9}$　つぎの文字列は、必ず英数字を使って、３文字以上、９文字以下とする。
+このルールを満たさないと、スマホの名前の値は変われません。
+また、スマホのメモリは必ず６４以上をして、代入できる値は６４倍数とする。さらに、ストレージも必ず１２８以上をして、
+値は１２８倍数とする。
+
+ファイル名：Sumaho.java
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+class Sumaho {
+    private String name;
+    private int memory;
+    private int storage;
+    Sumaho(){
+        this.name = "未定";
+        this.memory = 0;
+        this.storage = 0;
+    }
+    void setName(String name){
+        Pattern namePattern = Pattern.compile("^[A-Z][A-Za-z0-9]{3,9}$");
+        Matcher matcher = namePattern.matcher(name);
+        boolean isValid = matcher.find();
+        if(!isValid) return;
+        this.name = name;
+        return;
+    }
+    String getName(){
+        return this.name;
+    }
+    void setMemory(int memory){
+        if(memory < 64) return;
+        if(memory % 64 != 0) return;
+        this.memory = memory;
+        return;
+    } 
+    int getMemory(){
+        return this.memory;
+    }
+    void setStorage(int storage){
+        if(storage < 128) return;
+        if(storage % 128 != 0) return;
+        this.storage = storage;
+        return;
+    }
+    int getStorage(){
+        return this.storage;
+    }
+}
+ファイル名: Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Sumaho newPhone = new Sumaho();
+
+        System.out.println("スマホ名の制限テスト。");
+        newPhone.setName("00AbC");　//数字で始める
+        System.out.println(newPhone.getName());
+        newPhone.setName("aBc");　//小文字で始める
+        System.out.println(newPhone.getName());
+        newPhone.setName("A-B-C");　//禁止されている文字が含めている。
+        System.out.println(newPhone.getName());
+        newPhone.setName("A1234567890");　//長さが多すぎ。
+        System.out.println(newPhone.getName());
+        newPhone.setName("A123456789"); //ルールを完璧に満たす。
+        System.out.println(newPhone.getName());
+
+        System.out.println("\n\nスマホのメモリの制限テスト。");
+        newPhone.setMemory(32);　//６４未満
+        System.out.println(newPhone.getMemory());
+        newPhone.setMemory(65); //６４倍数ではない
+        System.out.println(newPhone.getMemory());
+        newPhone.setMemory(128); //ルールを満たす
+        System.out.println(newPhone.getMemory());
+
+        System.out.println("\n\nスマホのストレージの制限テスト。");
+        newPhone.setStorage(127); //１２８未満
+        System.out.println(newPhone.getStorage());
+        newPhone.setStorage(129); //１２８倍数ではない
+        System.out.println(newPhone.getStorage());
+        newPhone.setStorage(256); //ルールを満たす
+        System.out.println(newPhone.getStorage());
+    }
+}
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-8/src$ javac Kosenseiapp.java && java Kosenseiapp
+スマホ名の制限テスト。
+未定
+未定
+未定
+未定
+A123456789
+
+
+スマホのメモリの制限テスト。
+0
+0
+128
+
+
+スマホのストレージの制限テスト。
+0
+0
+256
+
+
+3. Kosenseiクラスにprivateなスマホを持たせ, スマホまるごとのアクセサーを追加せよ. 具体的には, Kosenseiクラスに, Sumaho型のフィールドsumahoを追加する. mainにはその機能をテストする内容を記述せよ. 編集するのはKosenseiクラスのみであることに注意せよ. (Kosenseiクラスのプログラム全体, 実行結果をレポート)
+ファイル名: Kosensei.java
+import java.util.Arrays;
+class Kosensei {
+    private String name;
+    private int year;
+    private String department;
+    private String address;
+
+    private Sumaho smartphone;
+
+    Kosensei(){
+        this.smartphone = null;
+        this.year = 0;
+        this.department = "未定";
+        this.name = "未定";
+        this.address = "未定";
+    }
+    void intro(){
+        System.out.println(String.format("私は、%d年%sの%sでございます。現在、私は%sに住んでいます。", this.year, this.department, this.name, this.address));
+        if(this.smartphone != null){
+            System.out.println("私は" + this.smartphone.getName() + "を持っています.");
+        }
+    }
+
+    void setYear(int year){
+        if (year < 1 || year > 5) return;
+        this.year = year;
+        return;
+    }
+    int getYear(){
+        return this.year;
+    }
+    void setDepartment(String departmentName){
+        String[] validDepartments = {"情報", "機械", "電気", "電子", "建築"};
+        if(Arrays.asList(validDepartments).indexOf(departmentName) == -1) return;
+        this.department = departmentName;
+        return;
+    }
+    String getDepartment(){
+        return this.department;
+    }
+    void setName(String name){
+        this.name = name;
+        return;
+    }
+    String getName(){
+        return this.name;
+    }
+    void setAddress(String address){
+        this.address = address;
+        return;
+    }
+    String getAddress(){
+        return this.address;
+    }
+    void setSmartphone(Sumaho phone){
+        this.smartphone = phone;
+        return;
+    }   
+    Sumaho getSmartphone(){
+        return this.smartphone;
+    }
+}
+
+ファイル名：Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Sumaho newPhone = new Sumaho();
+        newPhone.setName("Iphone");
+        newPhone.setMemory(128);
+        newPhone.setStorage(256);
+
+        Kosensei student = new Kosensei();
+        student.setName("クリス"); 
+        student.setAddress("釧路");
+        student.setYear(4); //ここで値が変わる
+        student.setDepartment("機械"); //ここで値が変わる。
+
+        System.out.println("スマホなし");
+        student.intro();
+        System.out.println("\nスマホあり");
+        student.setSmartphone(newPhone);
+        student.intro();
+
+    }
+}
+
+実行結果
+p234071@jks36:~/Documents/Source Codes/java/progen3A/week-8/src$ javac Kosenseiapp.java && java Kosenseiapp
+スマホなし
+私は、4年機械のクリスでございます。現在、私は釧路に住んでいます。
+
+スマホあり
+私は、4年機械のクリスでございます。現在、私は釧路に住んでいます。
+私はIphoneを持っています.
+
+
+4. フィールドと同様に, メソッド(コンストラクタを含む)にもprivate/publicを指定できる. 一般にメソッドはpublicとするが, privateメソッドを使うべき場合もある. privateメソッドは「どの様な場合に使うべきか」, 調査して具体的に報告せよ. 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブの場合はページタイトルとURL)を示すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載) 
+privateメソッドとは、そのクラスの内側しか使えないに使用する。例えば、あるソースコードを読みやすくなるために、あるメソッドを分割して、綺麗になりたい。
+分割されたメソッドが、できたメソッド、または関数がクラス外に使えるにならせる。しかし、その関数がクラスの目的に関係がありえないので、privateメソッドになると、
+そのメソッドがクラス内しかし、使えなくなる。
+Private Methods in Java 9 Interfaces - https://www.geeksforgeeks.org/private-methods-java-9-interfaces/
+
+5. 前回までのテーマ内容ではあるが, staticメソッドの他に, staticフィールドという変数も存在する. staticフィールドについてその効果や用途を調査して報告せよ. 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)(ウェブの場合はページタイトルとURL)を示すこと. 調査しても見つからない場合は, 自分の考察でも良い. (レポートに記載) 
+privateフィールドとは、そのクラスの内側しか使えないに使用する。パブリックフィールドはバラバラにアクセスされるので、どこかで変更したら、
+他のところに問題が発生する可能性がある。きちんと変更できるために、そのフィールドをprivateとして、すべてのアクセスは適切に管理されます。
+例えば、前の実験結果に基づいて、あるフィールドがルールを満たさないと行けないので、フィールドがpublicとすれば、クラス外からセットできるので、ルールを適切に施行出来なくなる。
+Private in Java: Why should you always keep fields and methods private? - https://javarevisited.blogspot.com/2012/03/private-in-java-why-should-you-always.html#axzz8eQID2FvC

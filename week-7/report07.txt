@@ -1,0 +1,77 @@
+４J　24番　クリスティアン　ハルジュノ　テーマ０７　レポート
+
+1. コマンドライン引数から三角形の高さと底辺の長さを実数で入力し, 面積を出力するプログラムを作成せよ. 以下の条件を満たす様に作成すること.
+ファイル名：Kadai01.java
+class Kadai01 {
+    static double calcArea(double a, double b){
+        return a * b / 2;
+    }
+    public static void main(String[] args){
+        double arg1 = Double.parseDouble(args[0]);
+        double arg2 = Double.parseDouble(args[1]);
+        double result = Kadai01.calcArea(arg1, arg2);
+        System.out.println(result);
+    }
+}
+2. コマンドライン引数から5科目のテストの点数を整数で入力し, その平均点を出力するプログラムを作成せよ. 以下の条件を満たす様に作成すること.
+ファイル名：Kadai02.java
+class Kadai02 {
+    static double calcAve(int a, int b, int c, int d, int e){
+        return (a + b + c + d + e)/5.0;
+    }
+    public static void main(String[] args){
+        int a = Integer.parseInt(args[0]);
+        int b = Integer.parseInt(args[1]);
+        int c = Integer.parseInt(args[2]);
+        int d = Integer.parseInt(args[3]);
+        int e = Integer.parseInt(args[4]);
+        double average = Kadai02.calcAve(a, b, c, d, e);
+        System.out.println(average);
+    }
+}
+3. コマンドライン引数から整数を1つ入力し, その値に応じて次の様な値を出力するプログラムを作成せよ. 以下の条件を満たす様に作成すること.
+ファイル名：Kadai03.java
+class Kadai03 {
+    static int isOddNum(int num){
+        return num % 2;
+    }
+    public static void main(String[] args){
+        int inputNum = Integer.parseInt(args[0]);
+        System.out.println(Kadai03.isOddNum(inputNum));
+    }
+}
+4. コマンドライン引数から整数を入力し, その値に応じて次の様な値を出力するプログラムを作成せよ. 以下の条件を満たす様に作成すること.
+ファイル名：Kadai04.java
+class Kadai04 {
+    static int isU18(int input){
+        return input < 18 ? 1 : 0;
+    }
+    public static void main(String[] args){
+        int input = Integer.parseInt(args[0]);
+        System.out.println(Kadai04.isU18(input));
+    }
+}
+5. 以下の仕様を満たす, 整数値の座標を表す MyPoint クラスを作成せよ. (main ではない)
+ファイル名：MyPoint.java
+class MyPoint {
+    int x;
+    int y;
+    MyPoint(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    void print(){
+        System.out.println(this.x + " " + this.y);
+    }
+
+}
+6. 以下の仕様を満たす, 課題5の MyPoint クラスを用いる main メソッドのみを含む MyPointApp クラスを作成せよ.
+ファイル名：MyPointApp.java
+class MyPointApp {
+    public static void main(String[] args){
+        int x = Integer.parseInt(args[0]);
+        int y = Integer.parseInt(args[1]);
+        MyPoint mp = new MyPoint(x, y);
+        mp.print();
+    }
+}

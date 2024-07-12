@@ -1,0 +1,202 @@
+４J　24番　クリスティアン　ハルジュノ　テーマ０６　レポート
+
+2024.05.24 課題5を修正.
+
+1. 今回の課題用ディレクトリを作成し, 上記の例題プログラムを実行せよ. コンストラクタは自分で作成して追加せよ. (4, "情報", "じょうたろう")などの学年・分野・名前の値や, jotaroなどのオブジェクト変数名は適切に変更すること. (コンストラクタ部分のコードをレポート) 
+
+a. 学年・分野・名前それぞれの値やオブジェクト変数名を変更した.
+b. コンストラクタ部分のコードを記載した.
+
+
+ファイル名 Kosensei.java
+class Kosensei {
+    String name;
+    int year;
+    String department;
+
+    Kosensei(String name, int year, String department){
+        this.name = name;
+        this.year = year;
+        this.department = department;
+    }
+}
+
+
+2. 高専生クラスのフィールドにString型の「住居」(フィールド名jukyo)を追加し, それに応じてコンストラクタや紹介メソッド, mainメソッドを修正せよ. 以下に実行結果の例を示す. 住居の値は"自宅", "学寮", "下宿"のいずれかの文字列とする. (この段階でのプログラム全体及び実行結果をレポート) 
+
+a. プログラム全体のコードを記載した.
+ファイル名 Kosensei.java
+class Kosensei {
+    String name;
+    int year;
+    String department;
+    String address;
+
+    Kosensei(String name, int year, String department, String address){
+        this.name = name;
+        this.year = year;
+        this.department = department;
+        this.address = address;
+    }
+    void intro(){
+        System.out.println(String.format("私は、%d年%sの%sでございます。現在、私は%sに住んでいます。", this.year, this.department, this.name, this.address));
+    }
+    static void intro(Kosensei student){
+        System.out.println(String.format("彼は、%d年%sの%sです。現在、私は%sに住んでいます。", student.year, student.department, student.name, student.address));
+    }
+
+}
+ファイル名 Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Kosensei student = new Kosensei("Chris", 4, "情報", "寮");
+        student.intro();
+        Kosensei.intro(student);
+    }
+}
+
+
+b. 実行結果を記載した.
+$ javac Kosenseiapp.java && java Kosenseiapp
+私は、4年情報のChrisでございます。現在、私は寮に住んでいます。
+彼は、4年情報のChrisです。現在、私は寮に住んでいます。
+
+3. 高専生クラスに, 住居が同じ内容の文字列かどうかを判定する通学仲間判定メソッドhanteiを, 通常版とstatic版の2通り追加し, それに応じてmainメソッドにも呼び出しコードを追加せよ. 判定結果は「通学仲間です」「通学仲間ではありません」のどちらかとする(メソッド内で表示するだけで良い). 以下に実行結果の例を示す. 判定結果をテストするために, 3人目の人物を登場させること. (追加した部分のソースと実行結果をレポート) 
+
+a. 追加した部分(hanteiメソッド2つ, mainでの呼び出し)のコードを記載した.
+ファイル名 Kosensei.java
+
+    void hantei(Kosensei student){
+        if(this.address.equals(student.address)){
+            System.out.println(String.format("私\"%s\"と\"%s\"さんは通学仲間です。", this.name, student.name));
+        } else {
+            System.out.println(String.format("私\"%s\"と\"%s\"さんは通学仲間ではありません。", this.name, student.name));
+        }
+
+    }
+    static void hantei(Kosensei studentA, Kosensei studentB){
+        if(studentA.address.equals(studentB.address)){
+            System.out.println(String.format("\"%s\"と\"%s\"さんは通学仲間です。", studentA.name, studentB.name));
+        } else {
+            System.out.println(String.format("\"%s\"と\"%s\"さんは通学仲間ではありません。", studentA.name, studentB.name));
+        }
+    }
+
+ファイル名 Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Kosensei student = new Kosensei("Chris", 4, "情報", "寮");
+        Kosensei studentA = new Kosensei("Peem", 4, "情報", "自宅");
+        Kosensei studentB = new Kosensei("Bachka", 4, "建築", "寮");
+        student.hantei(studentA);
+        Kosensei.hantei(student, studentB);
+    }
+}
+b. 実行結果を記載した.
+$ javac Kosenseiapp.java && java Kosenseiapp
+私"Chris"と"Peem"さんは通学仲間ではありません。
+"Chris"と"Bachka"さんは通学仲間です。
+
+
+4. 高専生クラスに, フィールドの学年の値を+1して更新する進級メソッドshinkyuを, 通常版とstatic版の2通り追加し, それに応じてmainメソッドにも呼び出しコードを追加せよ. 進級したことを表すメッセージも表示すること. (追加した部分のソースと実行結果, 通常版とstatic版の動作の違いをレポート) 
+
+a. 追加した部分(shinkyuメソッド2つ, mainでの呼び出し)のコードを記載した.
+ファイル名 Kosensei.java
+    void shinkyu(){
+        this.year += 1;
+        System.out.println(String.format("私は%d年に進級しました!", this.year));
+        return;
+    }
+    static void shinkyu(Kosensei student){
+        student.year += 1;
+        System.out.println(String.format("彼は%d年に進級しました!", student.year));
+        return;
+    }
+ファイル名 Kosenseiapp.java
+class Kosenseiapp {
+    public static void main(String[] args){
+        Kosensei student = new Kosensei("Chris", 4, "情報", "寮");
+        Kosensei studentA = new Kosensei("Peem", 4, "情報", "自宅");
+        student.shinkyu();
+        Kosensei.shinkyu(studentA);
+    }
+}
+b. 実行結果を記載した.
+$ javac Kosenseiapp.java && java Kosenseiapp
+私は5年に進級しました!
+彼は5年に進級しました!
+
+c. 通常版とstatic版の違いを記載した.
+通常版メソッドでは自分のクラスインスタンスの値をアクセスできる。だからこそ、this.で自分の値をアクセスできるし、変更もできる。しかし、スタチックメソッドで、自分のクラスインスタンスがないので、自分で持っている値がない。それなので、スタチックメソッドで、引数から変わりたいオブジェクト変数を代入しなければできまっせん。通常版メソッドは自分に対して処分を行いたいである。しかし、スタチックメソッドは他のクラスインスタンスに対して、処分を行います。
+
+5. 今回の高専生クラスを参考にして, 自由にクラスを作成してみよ. ただし, フィールドとして何らかの属性を持ち, メソッド呼び出しによりそれらの属性の値が更新される内容とすること. 通常のメソッドのみで良い(つまりstaticメソッドは作らなくて良い). 今後も何度も自由課題があるため, 壮大なクラスを作ることよりもレポート締切を優先すること. (プログラム全体のコード, 実行結果, 解説をレポート) 
+
+a. プログラム全体のコードを記載した.
+ファイル名 Company.java
+import java.util.Date;
+class Company {
+    String name;
+    Date founded;
+    String[] sector;
+    String stockSymbol;
+    double stockPrice;
+    String currentTrend;
+    Company(String name, Date founded, String[] sector, String stockSymbol, double stockPrice){
+        this.name = name;
+        this.founded = founded;
+        this.sector = sector;
+        this.stockSymbol = stockSymbol;
+        this.stockPrice = stockPrice;
+        this.currentTrend = "=";
+    }
+
+    void updatePrice(double newPrice){
+        if(newPrice == this.stockPrice){
+            this.currentTrend = "=";
+        }
+        if(newPrice > this.stockPrice){
+            this.currentTrend = "^";
+        }
+        if(newPrice < this.stockPrice) {
+            this.currentTrend = "v";
+        }
+
+        this.stockPrice = newPrice;
+
+        System.out.println(String.format("株価が更新されました。現在、株式%sは%.02fに変更されました。トレンドは%s", this.stockSymbol, newPrice, this.currentTrend ));
+    }
+}
+ファイル名 Companyapp.java
+import java.util.Date;
+class Companyapp {
+    public static void main(String[] args) {
+        String[] sectors = new String[2];
+        sectors[0] = "Technology";
+        sectors[1] = "Lifestyle";
+        Company company = new Company("Apple", new Date(1976 - 1900, 4, 1), sectors, "AAPL", 186.88);
+
+        company.updatePrice(190.00);
+        company.updatePrice(180.00);
+        company.updatePrice(180.00);
+        company.updatePrice(170.00);
+        company.updatePrice(176.00);
+        company.updatePrice(180.00);
+        company.updatePrice(190.00);
+
+    }
+}
+b. 実行結果を記載した.
+$ javac Companyapp.java && java  Companyapp
+$ javac Companyapp.java && java  Companyapp
+注意:Companyapp.javaは推奨されないAPIを使用またはオーバーライドしています。
+注意:詳細は、-Xlint:deprecationオプションを指定して再コンパイルしてください。
+株価が更新されました。現在、株式AAPLは190.00に変更されました。トレンドは^
+株価が更新されました。現在、株式AAPLは180.00に変更されました。トレンドはv
+株価が更新されました。現在、株式AAPLは180.00に変更されました。トレンドは=
+株価が更新されました。現在、株式AAPLは170.00に変更されました。トレンドはv
+株価が更新されました。現在、株式AAPLは176.00に変更されました。トレンドは^
+株価が更新されました。現在、株式AAPLは180.00に変更されました。トレンドは^
+株価が更新されました。現在、株式AAPLは190.00に変更されました。トレンドは^
+
+c. 解説を記載した.
+このプログラムは高専生の情報ではなく、株式会社の情報である。会社のクラスでは基礎な情報があり、名前、株価、シンボルなどがおいてある。会社の株価の変更があれば、もとの値はに比べて、トレンドを決まる。株価のトレンドが上向きになれば、クラスのcurrentTrendの値は"^"になる。また、下向きになれば、currentTrendは"v"になる。さらに、変更が終われば、新しい情報を表示する。

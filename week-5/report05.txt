@@ -1,0 +1,205 @@
+４J　24番　クリスティアン　ハルジュノ　テーマ０５　レポート
+2024.05.17 課題3を修正.
+1. Vector2Dクラスに, 上記の例にある加算メソッド2つをそのままコピーして追加せよ. mainメソッドにはstaticな加算メソッドを動作テストするコードを記述すること. なお, 加算メソッド内では表示を行わず, mainからprint()メソッドを呼び出して表示すること(これ以降の課題も同様). (addメソッドのコード2つ, コンストラクタのコード2つ, mainのコード, 実行結果をレポート) 
+a. 引数なしコンストラクタを追加した.
+    Vector2D(){
+        this.x = 0;
+        this.y = 0;
+    }
+b. 引数2つのコンストラクタをthis.を使う様に修正した.
+    Vector2D(double x, double y){
+        this.x = x;
+        this.y = y;
+    }
+c. addメソッドのコードを2つ記載した.
+    void add(Vector2D additionVector){
+        this.x += additionVector.x;
+        this.y += additionVector.y;
+    }
+    static Vector2D add(Vector2D a, Vector2D b){
+        Vector2D newVector = new Vector2D(a.x, a.y);
+        newVector.add(b);
+        return newVector;
+    }
+d. コンストラクタのコードを2つ記載した.
+    Vector2D(){
+        this.x = 0;
+        this.y = 0;
+    }
+    Vector2D(double x, double y){
+        this.x = x;
+        this.y = y;
+    }
+e. mainのコードを記載した.
+
+class Vector2DApp {
+    public static void main(String[] args){
+        Double x = Double.parseDouble(args[0]);
+        Double y = Double.parseDouble(args[1]);
+        Vector2D a = new Vector2D();
+        Vector2D b = new Vector2D(x, y);
+        Vector2D added = Vector2D.add(a, b);
+        System.out.println("ベクトルaの値は:");
+        a.print();
+        System.out.println("ベクトルbの値は:");
+        b.print();
+        System.out.println("加算されたベクトルは:");
+        added.print();
+    }
+}
+f. 実行結果を記載した.
+$ javac Vector2DApp.java
+$ java Vector2DApp 1.1 2.2
+ベクトルaの値は:
+X=0.00
+Y=0.00
+ベクトルbの値は:
+X=1.10
+Y=2.20
+加算されたベクトルは:
+X=1.10
+Y=2.20
+2. Vector2Dクラスに, 以下の仕様を満たすstaticな減算メソッドを追加せよ. mainメソッドにはstaticな減算メソッドを動作テストするコードを記述すること. (subtractメソッドのコード2つ, mainのコード, 実行結果をレポート) 
+a. 減算メソッドを呼び出す前後で引数のベクトルを表示し, 成分の値が変化していないことを確認した.
+b. subtractメソッドのコードを2つ記載した.
+    void subtract(Vector2D subtractionVector){
+        this.x -= subtractionVector.x;
+        this.y -= subtractionVector.y;
+    }
+    static Vector2D subtract(Vector2D a, Vector2D b){
+        Vector2D newVector = new Vector2D(a.x, b.y);
+        newVector.subtract(b);
+        return newVector;
+    }
+c. mainのコードを記載した.
+class Vector2DApp {
+    public static void main(String[] args){
+        Double x = Double.parseDouble(args[0]);
+        Double y = Double.parseDouble(args[1]);
+        Vector2D a = new Vector2D();
+        Vector2D b = new Vector2D(x, y);
+        System.out.println("減算される前の値：");
+        System.out.println("ベクトルaの値は:");
+        a.print();
+        System.out.println("ベクトルbの値は:");
+        b.print();
+        Vector2D subtracted = Vector2D.subtract(a, b);
+        System.out.println("減算された後の結果：");
+        System.out.println("ベクトルaの値は:");
+        a.print();
+        System.out.println("ベクトルbの値は:");
+        b.print();
+        System.out.println("加算されたベクトルは:");
+        subtracted.print();
+    }
+}
+d. 実行結果を記載した.
+$ javac Vector2DApp.java
+$ java Vector2DApp 1.1 2.2
+減算される前の値：
+ベクトルaの値は:
+X=0.00
+Y=0.00
+ベクトルbの値は:
+X=1.10
+Y=2.20
+減算された後の結果：
+ベクトルaの値は:
+X=0.00
+Y=0.00
+ベクトルbの値は:
+X=1.10
+Y=2.20
+加算されたベクトルは:
+X=-1.10
+Y=-2.20
+
+3.Vector2Dクラスに, 以下の仕様を満たすstaticな距離計算メソッドを追加せよ. mainメソッドにはstaticな距離計算メソッドを動作テストするコードを記述すること. (calcDistanceメソッドのコード, mainのコード, 実行結果をレポート) 
+a. 距離計算メソッドを呼び出す前後で引数のベクトルを表示し, 成分の値が変化していないことを確認した.
+b. calcDistanceメソッドのコードを記載した.
+    double calcDistance(){
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+    }
+    static double calcDistance(Vector2D a, Vector2D b){
+        return Math.sqrt(Math.pow(Math.abs(a.x - b.x), 2) + Math.pow(Math.abs(a.y -  b.y), 2));
+    }
+c. mainのコードを記載した.
+
+class Vector2DApp {
+    public static void main(String[] args){
+        Double x1 = Double.parseDouble(args[0]);
+        Double y1 = Double.parseDouble(args[1]);
+        Double x2 = Double.parseDouble(args[2]);
+        Double y2 = Double.parseDouble(args[3]);
+        Vector2D a = new Vector2D(x1, y1);
+        Vector2D b = new Vector2D(x2, y2);
+        System.out.println("計算前の値は：");
+        a.print();
+        b.print();
+        double distance = Vector2D.calcDistance(a, b);
+        System.out.println("ベクトル間の距離は: " + distance);
+        System.out.println("計算後の値は：");
+        a.print();
+        b.print();
+    }
+}
+d. 実行結果を記載した.
+
+$ javac Vector2DApp.java
+$ java Vector2DApp 5.0 5.0 5.0 5.0
+計算前の値は：
+X=5.00
+Y=5.00
+X=5.00
+Y=5.00
+ベクトル間の距離は: 0.0
+計算後の値は：
+X=5.00
+Y=5.00
+X=5.00
+Y=5.00
+$ java Vector2DApp 1.0 1.0 2.0 2.0
+計算前の値は：
+X=1.00
+Y=1.00
+X=2.00
+Y=2.00
+ベクトル間の距離は: 1.4142135623730951
+計算後の値は：
+X=1.00
+Y=1.00
+X=2.00
+Y=2.00
+
+4. 課題3のcalcDistanceメソッドからキーワード「static」のみを削除した場合, mainでの呼び出し方はどの様なコードになるか, つまりmain側をどの様に書き換えたらコンパイルして実行できるか, 具体例を作成して答えよ. また, その書き方が良くない理由を考察せよ. (main側の具体例と, その書き方が良くない理由をレポート) 
+a. calcDistance側は, staticを取り除いたのみであり, それ以外は変更してない.
+    double calcDistance(){
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+    double calcDistance(Vector2D a, Vector2D b){
+        return Math.sqrt(Math.pow(Math.abs(a.x - b.x), 2) + Math.pow(Math.abs(a.y -  b.y), 2));
+    }
+b. コンパイルして実行できるmain側の具体例を記載した.
+class Vector2DApp {
+    public static void main(String[] args){
+        Double x1 = Double.parseDouble(args[0]);
+        Double y1 = Double.parseDouble(args[1]);
+        Double x2 = Double.parseDouble(args[2]);
+        Double y2 = Double.parseDouble(args[3]);
+        Vector2D a = new Vector2D(x1, y1);
+        Vector2D b = new Vector2D(x2, y2);
+        System.out.println("計算前の値は：");
+        a.print();
+        b.print();
+        double distance = a.calcDistance(a, b);
+        System.out.println("ベクトル間の距離は: " + distance);
+        System.out.println("計算後の値は：");
+        a.print();
+        b.print();
+    }
+}
+c. その書き方が良くない理由を記載した.
+"static"とは変わらないという意味がある。"static"を関数にかけないとき、そのオブジェクトの値は"this."でアクセスできる。これで、引数を本オブジェクトの値に処理したければ良い。しかし、"static"をかけると、そのオブジェクトを初期化しなければ使えるという意味である。どうして良くないというと、"static"がない２つの引数の関数を使うとき、先に初期化されたオブジェクトを使わなければ行けない。しかし、その巻数が本オブジェクトに影響がない。書き方としては良くないということである。関係がないとか影響がないオブジェクトを使わない方が良い。
+
+5.これまで何度か使用してきたInteger.parseInt(〜)やDouble.parseDouble(〜), Math.sqrt(〜)は, 通常のメソッドとstaticメソッドのどちらと考えられるか, 理由を添えて答えよ. (選んだ答えと理由をレポート) 
+staticメソッドを使用していると考えられます。どうしてかというと、Java言語で、すべての値はオブジェクト指向である。先にの話の通りで、staticメソッドで、そのオブジェクトを先に初期化しなくても良い。IntegerのparseIntやDoubleのparseDoubleなどの関数を使うとき、本クラスを初期化しなくて、そのまま使うと言うことである。だからこそ、使用していた関数はすべてstaticメソッドである.
