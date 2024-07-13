@@ -6,14 +6,13 @@ public class User {
     private String email;
     private UUID userId;
     private LocalDate joinedAt;
-    public User User(String firstName, String lastName, String email){
+    public User(String firstName, String lastName, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
 
         this.userId = UUID.randomUUID();
         this.joinedAt = LocalDate.now();
-        return this; //メソッドチェーン
     }
     //Setters
     public User setFirstName(String firstName){
