@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+// IS-A User
 public class Seller extends User {
     private String storeName;
     private ArrayList<Item> itemList;

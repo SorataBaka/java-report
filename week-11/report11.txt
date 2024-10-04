@@ -1,0 +1,194 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ１１　レポート
+2024.09.06 課題１にソースコードを入れました.
+1. 基本型の配列の応用: 以下の仕様を満たす, 整数の配列リスト(配列で実現するリスト)クラスを作成せよ. 予め一定の大きさの配列を用意しておき, そこに先頭から順に要素を詰め込んで格納していく機能を持つクラスである. 動作をテストするmainも作成すること. (ソース, 実行結果をレポート)
+ファイル名：ArrayListInt.java
+public class ArrayListInt {
+    private int saidai;
+    private int[] a;
+    private int jissai;
+    public ArrayListInt(){
+        this.saidai = 5;
+        this.a = new int[this.saidai];
+        this.jissai = 0;
+    }
+    public void add(int newNumber){
+        if(this.jissai == this.saidai){
+            System.out.println("エラーが発生しました。配列が最大容量に達しました。");
+            return;
+        }
+        this.a[this.jissai++] = newNumber;
+        return;
+    }
+    public void print(){
+        for(int i = 0; i < this.jissai; i++){
+            System.out.println(this.a[i]);
+        }
+        return;
+    }
+    public int size(){
+        return this.jissai;
+    }
+    public int get(int index){
+        return this.a[index];
+    }
+}
+ファイル名：ArrayListIntApp.java
+public class ArrayListIntApp {
+    public static void main(String[] args){
+        ArrayListInt arrayList = new ArrayListInt();
+        arrayList.add(1);
+        arrayList.add(2);
+        arrayList.add(3);
+        arrayList.add(4);
+        arrayList.add(5);
+        arrayList.add(5);
+        arrayList.add(5);
+        arrayList.print();
+        int currentSize = arrayList.size();
+        int firstElement = arrayList.get(0);
+        
+        System.out.println("現在のサイズ：　" + currentSize);
+        System.out.println("配列の最初のあたいは" + firstElement);
+
+        return;
+    }
+}
+実行結果
+p234071@jks37:~/Documents/Source Codes/java/progen3A/week-11/src$ java ArrayListIntApp
+エラーが発生しました。配列が最大容量に達しました。
+エラーが発生しました。配列が最大容量に達しました。
+1
+2
+3
+4
+5
+現在のサイズ：　5
+配列の最初のあたいは1
+
+
+2. オブジェクトの配列の応用: 以下の仕様を満たす学級クラスを作成せよ. 動作をテストするmainも作成すること. mainでは通学生と寮生の両方を追加すること(スーパークラスである「高専生」は追加しない). (ソース, 実行結果をレポート)
+ファイル名: ClassRoom.java
+public class ClassRoom {
+    private int saidai;
+    private Kosensei[] a;
+    private int jissai;
+    public ClassRoom(){
+        this.saidai = 5;
+        this.a = new Kosensei[this.saidai];
+        this.jissai = 0;
+    }
+    public void add(Kosensei newStudent){
+        if(this.jissai == this.saidai){
+            System.out.println("エラーが発生しました。配列が最大容量に達しました。");
+            return;
+        }
+        this.a[this.jissai++] = newStudent;
+        return;
+    }
+    public int size(){
+        return this.jissai;
+    }
+    public Kosensei get(int index){
+        return this.a[index];
+    }
+    public void shokai(){
+        for(int i = 0; i < this.jissai; i++){
+            this.a[i].intro();
+        }
+    }
+}
+ファイル名: ClassRoomApp.java
+public class ClassRoomApp {
+    public static void main(String[] args){
+        ClassRoom newClassroom = new ClassRoom();
+        Ryosei a = new Ryosei("クリス",4, "情報");
+        Ryosei b = new Ryosei("バチカ",4, "情報");
+        Tsusei c = new Tsusei("西村",4, "情報", "バス");
+
+        a.setDoshitsusha(b);
+
+        newClassroom.add(a);
+        newClassroom.add(b);
+        newClassroom.add(c);
+
+        //エラーを発生するように
+        newClassroom.add(new Ryosei("ア様",4 , "情報"));
+        newClassroom.add(new Ryosei("イ様",4 , "情報"));
+        newClassroom.add(new Ryosei("ウ様",4 , "情報"));
+
+
+        int currentSize = newClassroom.size();
+        Kosensei firstStudent = newClassroom.get(0);
+        newClassroom.shokai();
+
+        System.out.println("配列の現在のサイズは" + currentSize);
+        System.out.println("配列の最初の学生は" + firstStudent.getName());
+
+
+    }
+}
+実行結果
+p234071@jks37:~/Documents/Source Codes/java/progen3A/week-11/src/kadai2$ java ClassRoomApp
+エラーが発生しました。配列が最大容量に達しました。
+私は、4年情報のクリスでございます。バチカと同室しています。
+私は、4年情報のバチカでございます。クリスと同室しています。
+私は、4年情報の西村でございます。毎日バスで学校へ行きます。
+私は、4年情報のア様でございます。なしと同室しています。
+私は、4年情報のイ様でございます。なしと同室しています。
+配列の現在のサイズは5
+配列の最初の学生はクリス
+
+3. 課題2の全自己紹介メソッドでは, 「高専生クラス」の配列の要素一つ一つに対してshokaiメソッドを呼び出しているのだから, 「高専生クラス」のshokaiメソッドが実行されると予想される. ところが, 実際にはそうではない実行結果となる. その実行結果の説明と, その機能の呼び名を調査して報告せよ. (レポート) 
+
+実行結果の説明を載せた. (Kosenseiのshokaiでは表示されないはずの○○が表示されている, 等)
+親クラス(Kosensei)と子クラス(TsuseiまたはRyosei)は両側同じメソッド名を持ちていますが、Java言語で、同じメソッド名がある場合には親クラスにあるメソッドをオーバーライドさせます。つまり、子クラスのメソッドを優先的に上げます。
+よって、子クラスにあるメッソド優先的に呼ばれます。
+
+その機能の呼び名を載せた.
+Polymorphism(多態性)のメソッドオーバーライディング
+
+4. 配列の添字(要素の番号)操作やポインタ演算によるメモリアクセスの危険性について, C言語とJavaでどの様に異なるか, 比較して考察せよ. 調査に用いた文献情報(著者・図書名・出版社・出版年・ページ範囲)を必ず示すこと. ネットで調べても良いが, その場合はURLを示し, 必ず「実際に実行」してその結果を確認してみること. (考察, 文献情報, URL, ソース, 実行結果をレポート)
+
+Java言語で、全変数はオブジェクト型である。これで、ある変数は配列に見えるのに、その変数の事実の形はオブジェクトである。Java言語である配列の形は自体の要素の番号をそのクラス内に持ちている。その配列をアクセスするときに、[]演算子に入力された要素の番号を先に照合して、入力された要素の番号が最大要素数よりもっと大きい場合にはエラーが発生される。
+public class ArrayOutOfBoundsDemo {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3};
+        System.out.println(numbers[5]);
+    }
+}
+実行結果
+p234071@jks37:~/Documents/Source Codes/java/progen3A/week-11$ java ArrayOutOfBoundsDemo
+Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: Index 5 out of bounds for length 3
+	at ArrayOutOfBoundsDemo.main(ArrayOutOfBoundsDemo.java:4)
+
+C言語より、ある変数は配列とすれば、その変数は本物の配列である。その変数の中に、配列の最大要素数やメソッドなどが存在していない。だからこそ、[]演算子に要素番号を入力すれば、配列の最大要素数に照合できない。入力された要素番号は最大要素数より大きい場合には、配列の初期化されたメモリブロック以外の場所をアクセスされる。
+#include <stdio.h>
+int main() {
+    // Declare an array of 5 integers
+    int arr[5] = {0, 1, 2, 3, 4};
+    for (int i = 0; i <= 10; i++) {
+        arr[i] = i;
+        printf("arr[%d] = %d\n", i, arr[i]);
+    }
+    return 0;
+}
+実行結果
+p234071@jks37:~/Documents/Source Codes/java/progen3A/week-11$ ./a.out
+arr[0] = 0
+arr[1] = 1
+arr[2] = 2
+arr[3] = 3
+arr[4] = 4
+arr[5] = 5 //配列に０から４まで入力されたのに、この列以下の数字がどこから出るの？
+arr[6] = 6
+arr[7] = 7
+arr[8] = 8
+arr[9] = 9
+arr[10] = 10
+
+戻って来るあたいが不思議な数字に見える。それだけではなく、安全性的には危ないという、他のプログラムが担当しているメモリブロックをアクセスされ、本プログラムが担当していない情報を見えるになれる。
+
+例えば、他のプログラムが担当しているメモリブロックに暗証番号を保存され、本プログラムはそのメモリブロックをアクセスして、暗証番号を取得される。
+
+https://icarus.cs.weber.edu/~dab/cs1410/textbook/7.Arrays/cpp_v_java.html
+https://www.naukri.com/code360/library/accessing-an-array-out-of-bounds-in-cc

@@ -1,0 +1,58 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ１０　レポート
+1.以下の実行例の様に, コマンドライン引数から5科目のテストの点数を整数で入力し, それぞれ配列の要素に格納し, for ループを用いてそのまま標準出力に出力(以下, 単に出力と書く)するJavaプログラムを作成せよ. 
+ファイル名：Kadai01.java
+public class Kadai01 {
+    public static void main(String[] args){
+        int[] a = new int[args.length];
+        for(int i = 0; i < args.length; i++){
+            a[i] = Integer.parseInt(args[i]);
+        }
+        for(int i = 0; i < args.length; i++){
+            System.out.println(a[i]);
+        }
+    }
+}
+2. コマンドライン引数から5科目のテストの点数を整数で入力し, それぞれ配列の要素に格納し, for ループを用いてそのまま出力するJavaプログラムを作成せよ. 以下の条件を満たす様に作成すること. 
+ファイル名：Kadai02.java
+public class Kadai02 {
+    public static void print(int[] a){
+        for(int i = 0; i < a.length; i++){
+            System.out.println(a[i]);
+        }
+    }
+    public static void main(String[] args){
+        int[] a = new int[args.length];
+        for(int i = 0; i < args.length; i++){
+            a[i] = Integer.parseInt(args[i]);
+        }
+        print(a);
+    }
+}
+3. コマンドライン引数から5科目のテストの点数を整数で入力し, それぞれ配列の要素に格納し, for ループを用いてその平均点を出力するJavaプログラムを作成せよ. 以下の条件を満たす様に作成すること. 
+ファイル名：Kadai03.java
+public class Kadai03 {
+    public static double calcMean(int[] a){
+        double total = 0;
+        for(int i = 0; i < a.length; i++){
+            total += a[i];
+        }
+        return total / a.length;
+    }
+    public static void main(String[] args){
+        int[] a = new int[args.length];
+        for(int i = 0; i < args.length; i++){
+            a[i] = Integer.parseInt(args[i]);
+        }
+        double mean = calcMean(a);
+        System.out.println(mean);
+    }
+}
+4. 以下の実行例の様に, コマンドライン引数から五つの整数を入力し, それぞれ配列の要素に格納し, for ループを用いてi番要素の値とi+1番要素の値を組にして表示するJavaプログラムを作成せよ. a[0]とa[1]を表示して改行, a[1]とa[2]を表示して改行, ..., a[n-2]とa[n-1]を表示して改行するプログラムである. 
+ファイル名：Kadai04.java
+public class Kadai04 {
+    public static void main(String[] args){
+        for(int i = 0; i < args.length - 1; i++){
+            System.out.println(args[i] + " " + args[i + 1]);
+        }
+    }
+}

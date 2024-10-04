@@ -132,3 +132,241 @@ p234071@jks36:~/Documents/Source Codes/java/progen3A/week-9/src$ java RyoseiApp
 私は、4年情報のクリスでございます。バチカと同室しています。
 私は、4年建築のバチカでございます。クリスと同室しています。
 
+5. 曲データとカラオケ曲データや, 高専生と通学生の様に, IS-A関係にあるクラスを自由に作成せよ. 実在するもの, しないもの, しそうなものなど, 何でも良い. (***自分で決めた設定***, mainを含めてプログラム全体, 実行結果をレポート)
+このプログラムでは、Java クラスの形式でフリーマーケット Web サイトを表現しました。フリーマーケット Web サイトには、買い手と売り手がいて、どちらも Web サイトのユーザーです。ユーザー オブジェクトには、名前、電子メール、ユーザー ID など、Web サイトのすべてのユーザーに必要な基本情報が含まれています。
+買い手と売り手はそれぞれ異なる情報を必要とするため、User オブジェクトを Buyer クラスと Seller クラスに拡張しました。これは、Buyer クラスと Seller クラスが User オブジェクト (IS-A 関係) であることを表します。
+買い手と売り手は Web サイトでアイテムを交換します。このため、交換されたアイテムを表す Item クラスを追加しました。これは、買い手と売り手の両方が交換されたアイテムを持っていることを表します (HAS-A 関係)
+
+ファイル名：User.java
+import java.util.UUID;
+import java.time.LocalDate;
+public class User {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private UUID userId;
+    private LocalDate joinedAt;
+    public User(String firstName, String lastName, String email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+
+        this.userId = UUID.randomUUID();
+        this.joinedAt = LocalDate.now();
+    }
+    //Setters
+    public User setFirstName(String firstName){
+        this.firstName = firstName;
+        return this; //メソッドチェーン
+    }
+    public User setLastName(String lastName){
+        this.lastName = lastName;
+        return this; //メソッドチェーン
+    }
+    public User setEmail(String email){
+        this.email = email;
+        return this; //メソッドチェーン
+    }
+    //Getters
+    public String getName(){
+        return this.firstName + " " + this.lastName;
+    }
+    public String getEmail(){
+        return this.email;
+    }
+    public String getUserId(){
+        return this.userId.toString();
+    }
+    public LocalDate getJoinedAt(){
+        return this.joinedAt;
+    }
+}
+ファイル名：Buyer.java
+import java.util.ArrayList;
+class Buyer extends User {
+  private ArrayList<Item> orders;
+  public Buyer(String firstName, String lastName, String email){
+    super(firstName, lastName, email);
+    this.orders = new ArrayList<>();
+  }
+  public ArrayList<Item>addOrder(Item newOrder){
+    this.orders.add(newOrder);
+    return this.orders;
+  }
+  public ArrayList<Item>getAllOrders(){
+    return this.orders;
+  }
+}
+ファイル名：Item.java
+import java.util.UUID;
+import java.time.LocalDate;
+public class Item {
+    private String itemName;
+    private double price;
+    private String[] category;
+    private UUID itemId;
+    private LocalDate createdAt;
+    public Item(String itemName, double price, String[] category){
+        this.itemName = itemName;
+        this.price = price;
+        this.category = category;
+        this.itemId = UUID.randomUUID();
+        this.createdAt = LocalDate.now();
+    }
+    public Item setName(String itemName){
+        this.itemName = itemName;
+        return this;
+    }
+    public Item setPrice(double newPrice){
+        this.price = newPrice;
+        return this;
+    }
+    public Item setCategory(String[] newCategory){
+        this.category = newCategory;
+        return this;
+    }
+    public String getName(){
+        return this.itemName;
+    }
+    public double getPrice(){
+        return this.price;
+    }
+    public String[] getCategory(){
+        return this.category;
+    }
+    public String getItemId(){
+        return this.itemId.toString();
+    }
+    public LocalDate getCreatedAt(){
+        return this.createdAt;
+    }   
+}
+ファイル名：Seller.java
+import java.util.ArrayList;
+
+public class Seller extends User {
+    private String storeName;
+    private ArrayList<Item> itemList;
+    public Seller(String firstName, String lastName, String email, String storeName){
+        super(firstName, lastName, email);
+        this.storeName = storeName;
+        this.itemList = new ArrayList<>();
+        
+    }
+    public Seller setStoreName(String newStoreName){
+        this.storeName = newStoreName;
+        return this;
+    }
+    public String getStoreName(){
+        return this.storeName;
+    }
+    public ArrayList<Item> getAllItems(){
+        return this.itemList;
+    }
+    public Item getItem(int itemIndex){
+        return this.itemList.get(itemIndex);
+    }
+    public Item getItem(String id){
+        Item retrievedItem = null;
+        for(int i = 0; i < itemList.size(); i++){
+            if(itemList.get(i).getItemId().equals(id)){
+                retrievedItem = itemList.get(i);
+            }
+        }
+        return retrievedItem;
+    }
+    public ArrayList<Item> addItem(Item newItem){
+        this.itemList.add(newItem);
+        return this.itemList;
+    }
+    public Item removeItem(String targetId){
+        Item removedItem = null;
+        for(int i = 0; i < itemList.size(); i++){
+            if(itemList.get(i).getItemId().equals(targetId)){
+                removedItem = itemList.get(i);
+                itemList.remove(i);
+            }
+        }
+        return removedItem;
+    }
+}
+ファイル名：Furima.java
+import java.util.ArrayList;
+class Furima{
+  public static void main(String[] args){
+    Seller seller = new Seller("Emma","Johnson","emma.johnson@example.com","Chic Boutique");
+    Buyer buyer = new Buyer("Christian", "Harjuno", "harjuno.tian@gmail.com");
+    //確認
+    System.out.println(seller.getStoreName());
+    System.out.println(seller.getName());
+    System.out.println(buyer.getName());
+
+    System.out.println("");
+
+    //商品を追加
+    String[] categories = {"シャツ"};
+    seller.addItem(new Item("コットンシャツ", 900.00, categories));
+    seller.addItem(new Item("エアリズムコットンT", 999.00, categories));
+    seller.addItem(new Item("間違い商品", 999.00, categories));
+    
+    //全ての商品を印刷
+    ArrayList<Item> items = seller.getAllItems();
+    for(int i = 0; i < items.size(); i++){
+      System.out.println(items.get(i).getName() + " " + items.get(i).getPrice());
+    }
+
+    System.out.println("");
+
+    //間違い商品を直し
+    seller.getItem(2).setName("正しい商品").setPrice(1000.00); //チェンメソッド
+
+    //全ての商品を印刷
+    items = seller.getAllItems();
+    for(int i = 0; i < items.size(); i++){
+      System.out.println(items.get(i).getName() + " " + items.get(i).getPrice());
+    }
+
+
+
+    String itemId = seller.getItem(0).getItemId();
+    System.out.println("\n商品のID: " + itemId);
+
+    Item orderedItem = seller.removeItem(itemId);
+    buyer.addOrder(orderedItem);
+
+    //全ての商品を印刷
+    System.out.println("\n売り手");
+    items = seller.getAllItems();
+    for(int i = 0; i < items.size(); i++){
+      System.out.println(items.get(i).getName() + " " + items.get(i).getPrice());
+    }
+    System.out.println("\n買い手");
+    items = buyer.getAllOrders();
+    for(int i = 0; i < items.size(); i++){
+      System.out.println(items.get(i).getName() + " " + items.get(i).getPrice());
+    }
+  }
+}
+
+実行結果
+p234071@jns28:~/Documents/Source Codes/java/progen3A/week-9/src/kadai-4$ java Furima
+Chic Boutique
+Emma Johnson
+Christian Harjuno
+
+コットンシャツ 900.0
+エアリズムコットンT 999.0
+間違い商品 999.0
+
+コットンシャツ 900.0
+エアリズムコットンT 999.0
+正しい商品 1000.0
+
+商品のID: 2cbb66e2-d4cf-4443-8242-8adf0a759b55
+
+売り手
+エアリズムコットンT 999.0
+正しい商品 1000.0
+
+買い手
+コットンシャツ 900.0

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+// IS-A User
 class Buyer extends User {
   private ArrayList<Item> orders;
   public Buyer(String firstName, String lastName, String email){
