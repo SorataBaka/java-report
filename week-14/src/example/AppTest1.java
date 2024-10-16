@@ -1,3 +1,4 @@
+package example;
 import javax.swing.*;
 
 public class AppTest1 extends JFrame {
