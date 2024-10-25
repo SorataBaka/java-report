@@ -1,0 +1,7 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ１５　レポート
+1. [練習] 上記のJCheckBoxの例を実際に動作させてみよ. (完成したソース, 仕組みについての考察をレポート) 
+ファイル名：CheckFrame.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList; 
