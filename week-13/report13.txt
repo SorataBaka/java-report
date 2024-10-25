@@ -1,0 +1,170 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ１３　レポート
+
+1. 上記の説明に従って, 実際にGUIアプリケーションAppTest1〜AppTest3を作成して実行し, 期待通りに動作することを確認せよ. (AppTest1, AppTest2, AppTest3それぞれ完了した段階で, 素晴らしいと感じた仕組みをレポート. 一般ユーザー視点ではなく開発者視点で考えること.)
+
+ファイル名：AppTest1.java
+import javax.swing.*;
+
+public class AppTest1 extends JFrame {
+    public AppTest1(){
+        super();
+    }
+    public static void main(String[] args){
+        AppTest1 a = new AppTest1();
+        a.setSize(1920, 1080);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+ファイル名：AppTest2.java
+import javax.swing.*;
+
+public class AppTest2 extends JFrame {
+    private JButton button;
+    public AppTest2(){
+        super();
+        this.button = new JButton("押してね☆"); 
+        this.getContentPane().add(this.button);
+    }
+    public static void main(String[] args){
+        AppTest2 a = new AppTest2();
+        a.setSize(1920, 1080);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+ファイル名：AppTest3.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class AppTest3 extends JFrame implements ActionListener {
+    private JButton button;
+    public AppTest3(){
+        super();
+        this.button = new JButton("押してね☆"); 
+        this.button.addActionListener(this);
+        this.getContentPane().add(this.button);
+    }
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == this.button) {
+            System.out.println("Hello World");
+        }
+    }
+    public static void main(String[] args){
+        AppTest3 a = new AppTest3();
+        a.setSize(1920, 1080);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+面白いところはHTMLの考え方と同じ様にGUIを作られる。HTML（特にReactフレームワーク等）全部品（今回はボタン）はクラスである。各クラスを初期化されたときに、”ボックス”に入れて一緒にに表示される。また、JavaScriptで、ボタンやマウスクリック等を押されたときに”イベントクラス”を発生されて、そのイベントに沿って作業を行われる。
+上のソースコードを実行する際にターミナルの画面で"Hello World"を表示される。何回押しても、プログラムを実行すているときにボタンをクリックするとターミナルに文字列を出せる。
+
+
+2. Java API仕様や参考図書からJButtonクラスのsetTextメソッドの使い方を調査し, AppTest3でボタンが押された時に, そのボタンに表示されている文字列を変更するプログラム「AppTest4」を作成せよ. (調査した結果および, ソース中の改造した場所(where), 改造した内容(how), その場所を選んだ理由(why)をレポート)
+
+JavaAPIの文献集にそって、JButtonクラスはAbstractButtonクラスを継承された。AbstractButtonクラスの中に、setTextメソッドが存在されている。(https://docs.oracle.com/javase/jp/8/docs/api/javax/swing/AbstractButton.html#setText-java.lang.String-)
+このメソッドでは引数を文字列として新しい表示したい文字列を代入する。このメソッドを呼び出す際には画面に表示しているボタンの文字列を変更される。
+
+ファイル名：AppTest4
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class AppTest4 extends JFrame implements ActionListener {
+    private JButton button;
+    private int counter;
+    public AppTest4(){
+        super();
+        this.button = new JButton("押してね☆"); 
+        this.button.addActionListener(this);
+        this.getContentPane().add(this.button);
+        this.counter = 0;
+    }
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == this.button) {
+            this.counter++;
+            this.button.setText("このボタンは"+this.counter+"回おされた");
+        }
+    }
+    public static void main(String[] args){
+        AppTest4 a = new AppTest4();
+        a.setSize(1920, 1080);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+
+変更された部分として、AppTest4クラスのフィールドに整数型変数counterを追加されました。コンストラクタでこの変数を初期化して、0を代入しました。画面にあるボタンを押されたときに、カウンターに１を足して、その結果はボタンの文字列に表示される。数回押されると、ボタンに表示している文字列も回数を表示する。
+actionPerformedメソッドはイベントを発生するときに実行してそのイベントの対象部品はボタンであれば、作業を実行する。そのため、ボタンを押すときに作業をしたいところでactionPerformedメソッドに新手順を追加する。
+
+
+3. AppTest4をさらに自由に改造し, 「nullレイアウト」という方法で複数の部品を配置するAppTest5を作成せよ. (ソース全体をレポートファイルに貼り付け) 
+ファイル名：AppTest5.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class AppTest5 extends JFrame implements ActionListener {
+    private JButton button;
+    private JButton resetButton;
+    private JButton removeButton;
+
+    private int counter;
+
+    private String defaultText;
+
+    public AppTest5(){
+        super();
+        
+        this.defaultText = "押してね☆";
+
+        Container container = this.getContentPane();
+        container.setLayout(null);
+
+        this.button = new JButton(this.defaultText); 
+        this.button.addActionListener(this);
+        this.button.setBounds((1920/2) - 200, (1080/2), 200, 100);
+        
+        this.resetButton = new JButton("リセット");
+        this.resetButton.addActionListener(this);
+        this.resetButton.setBounds((1920/2) - 200, (1080/2) - 110, 200, 100);
+
+        this.removeButton = new JButton("回数を減算");
+        this.removeButton.addActionListener(this);
+        this.removeButton.setBounds((1920/2) - 200, (1080/2) + 110, 200, 100);
+
+
+        container.add(this.button);
+        container.add(this.resetButton);
+        container.add(this.removeButton);
+
+        this.counter = 0;
+    }
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == this.button) {
+            this.counter++;
+            this.setButtonText();
+        }
+        if(e.getSource() == this.resetButton){
+            this.counter = 0;
+            this.button.setText(this.defaultText);
+        }
+        if(e.getSource() == this.removeButton){
+            this.counter--;
+            this.setButtonText();
+        }
+    }
+    public void setButtonText(){
+        this.button.setText("このボタンは"+this.counter+"回おされた");
+    }
+    public static void main(String[] args){
+        AppTest5 a = new AppTest5();
+        a.setSize(1920, 1080);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+4. 初めてGUIプログラムを作成した感想や疑問点, 今後GUIに関して具体的にやってみたい点等を述べよ. (レポートに記入)
+今までGUIを作りたい際には、複雑なフレームワークを使って、きれいなGUIを作られました。今後新しい言語で、きれいなGUIを作ってみたいと思います。
