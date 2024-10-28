@@ -1,7 +1,216 @@
 ４J　２４番　クリスティアン　ハルジュノ　テーマ１５　レポート
 1. [練習] 上記のJCheckBoxの例を実際に動作させてみよ. (完成したソース, 仕組みについての考察をレポート) 
+ファイル名：Check.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+public class Check extends JFrame implements ActionListener{
+  private JCheckBox cb1, cb2;
+  private JButton judge;
+
+  public Check(){
+    super();
+    this.cb1 = new JCheckBox("数学が得意");
+    this.cb2 = new JCheckBox("英語が得意");
+    this.judge  = new JButton("判定");
+    this.judge.addActionListener(this);
+
+    Container container = this.getContentPane();
+    JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new FlowLayout());
+    mainPanel.add(this.cb1);
+    mainPanel.add(this.cb2);
+    mainPanel.add(this.judge);
+
+    container.add(mainPanel);
+  }
+  public void actionPerformed(ActionEvent e){
+    if(e.getSource() == this.judge){
+      if(this.cb1.isSelected() && this.cb2.isSelected()){
+        System.out.println("あなたは天才ですね！数学と英語どっちも得意じゃん！");
+      } else if(!this.cb1.isSelected() && this.cb2.isSelected()){
+        System.out.println("いいですね！でも数学も重要ですよ！");
+      } else if(this.cb1.isSelected() && !this.cb2.isSelected()){
+        System.out.println("いいですね！でも英語も重要ですよ！");
+      } else {
+        System.out.println("英語と数学どっちも得意ではないんですが、もっと頑張ってください！");
+      }
+    }
+  }
+  public static void main(String[] args){
+    Check a = new Check();
+    a.setSize(1280, 720);
+    a.setLocation(0, 0);
+    a.setVisible(true);
+  }
+}
+このソースコードのJCheckBoxというクラスを初期化して、画面の上に立ち上げる。判定ボタン（judge）をクリックするときに、かくチェックボックスを判定する。初期化されたJCheckBoxクラスにはisSelected()という関数がある。この関数はそのチェックボックスの状態にチェックされたかどうか判定出来る。各チェックボックスの状態を合わせて、ターミナル上に出力される文字列を変わる。
+
+2. [練習] 上記のJRadioButtonの例を実際に動作させてみよ. (完成したソース, 仕組みについての考察をレポート)
+ファイル名：Radio.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+public class Radio extends JFrame implements ActionListener {
+  private JRadioButton rb1, rb2, rb3;
+  private JButton kettei;
+  public Radio(){
+    Container container  = this.getContentPane();
+    JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new FlowLayout());
+
+    this.rb1 = new JRadioButton("就職");
+    this.rb2 = new JRadioButton("専攻科進学");
+    this.rb3 = new JRadioButton("大学編入学");
+
+    this.kettei = new JButton("決定");
+    this.kettei.addActionListener(this);
+
+    ButtonGroup group = new ButtonGroup();
+    group.add(this.rb1);
+    group.add(this.rb2);
+    group.add(this.rb3);
+
+    mainPanel.add(this.rb1);
+    mainPanel.add(this.rb2);
+    mainPanel.add(this.rb3);
+    mainPanel.add(this.kettei);
+
+    container.add(mainPanel);
+  }
+  public void actionPerformed(ActionEvent e){
+    if(e.getSource() == this.kettei){
+      if(!this.rb1.isSelected() && !this.rb2.isSelected() && !this.rb3.isSelected()){
+        System.out.println("科目を決定してください！");
+      } else if(this.rb1.isSelected()){
+        System.out.println("実習系科目には特にしっかり取り組みましょう!");
+      } else if(this.rb2.isSelected()){
+        System.out.println("専攻科を決定しました！推薦を準備しましょう！");
+      } else if(this.rb3.isSelected()){
+        System.out.println("大学編入学を決定しました！学力のために勉強しましょう！");
+      }
+      
+    }
+  }
+  public static void main(String[] args){
+    Radio a = new Radio();
+    a.setSize(1280, 720);
+    a.setLocation(0, 0);
+    a.setVisible(true);
+  }
+}
+ButtonGroupクラスではクラスに追加されたチェックボックスを全部繋げられる。ButtonGroupに含まれたチェックボックスは一つだけ選択出来る。ButtonGroupに含まれないと何個も選できる。
+
+3. JCheckBoxとJRadioButtonを両方用いて, 自由にGUIプログラムを作成せよ. (ソース, 使用方法をレポート)
 ファイル名：CheckFrame.java
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList; 
+import java.util.ArrayList;
+public class CheckFrame extends JFrame implements ActionListener {
+    private ArrayList<String> taskList;
+    private JTextField taskInput;
+    private JPanel taskInputPanel;
+    private JPanel mainPanel;
+    private JButton createTaskButton;
+    private void hydrate(){
+        this.taskList.add("Eat bread");
+        this.taskList.add("Take a break");
+        this.taskList.add("Finish reports");
+    }
+    private void fillGrid(){
+        this.mainPanel.removeAll();
+        this.mainPanel.add(this.taskInputPanel);
+        for(int i = 0; i < taskList.size(); i++){
+            JPanel taskPanel = new JPanel();
+            taskPanel.setLayout(new BorderLayout());
+
+            JCheckBox taskCheckBox = new JCheckBox(this.taskList.get(i));
+            taskCheckBox.addActionListener(this);
+            taskCheckBox.setFont(new Font("Serif", Font.PLAIN, 30));
+
+            JRadioButton priorityLow = new JRadioButton("LOW");
+            JRadioButton priorityMedium = new JRadioButton("MED");
+            JRadioButton priorityHigh = new JRadioButton("HIGH");
+
+            ButtonGroup radioGroup = new ButtonGroup();
+            radioGroup.add(priorityLow);
+            radioGroup.add(priorityMedium);
+            radioGroup.add(priorityHigh);
+
+            JPanel radioPanel = new JPanel();
+            radioPanel.setLayout(new FlowLayout());
+            radioPanel.add(priorityLow);
+            radioPanel.add(priorityMedium);
+            radioPanel.add(priorityHigh);
+
+            taskPanel.add(taskCheckBox, BorderLayout.WEST);
+            taskPanel.add(radioPanel, BorderLayout.EAST);
+
+            this.mainPanel.add(taskPanel);
+        }
+        this.mainPanel.revalidate();
+        this.mainPanel.repaint();
+    }
+    public CheckFrame(){
+        super();
+        this.taskList = new ArrayList<String>();
+        this.hydrate();
+
+        this.taskInput = new JTextField();
+        this.createTaskButton = new JButton("作成");
+
+        this.taskInput.setPreferredSize(new Dimension(1000, 50));
+        this.taskInput.setFont(new Font("Serif", Font.PLAIN, 50));
+
+        this.createTaskButton.addActionListener(this);
+        this.createTaskButton.setPreferredSize(new Dimension(200,50));
+        this.createTaskButton.setFont(new Font("Serif", Font.PLAIN, 30));
+
+        this.taskInputPanel = new JPanel();
+        this.taskInputPanel.setLayout(new FlowLayout());
+        this.taskInputPanel.add(this.taskInput);
+        this.taskInputPanel.add(this.createTaskButton);
+        
+        Container container  = this.getContentPane();
+        this.mainPanel = new JPanel();
+        this.mainPanel.setLayout(new GridLayout(6, 1));
+        this.fillGrid();
+
+
+        container.add(mainPanel);
+    }
+
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == this.createTaskButton){
+            String taskName = this.taskInput.getText();
+            if(taskName.length() == 0) return;
+            this.taskList.add(taskName);
+            this.taskInput.setText("");
+            this.fillGrid();
+        }
+        if(e.getSource() instanceof JCheckBox){
+            JCheckBox checkedBox = (JCheckBox)e.getSource();
+            String taskName = checkedBox.getText();
+            for(int i = 0; i < this.taskList.size(); i++){
+                if(taskName == this.taskList.get(i)){
+                    this.taskList.remove(i);
+                    this.fillGrid();
+                }
+            }
+        }
+
+    }
+    public static void main(String[] args){
+        CheckFrame a = new CheckFrame();
+        a.setSize(1280, 720);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+実行方法：
+$ javac CheckFrame.java
+$ java CheckFrame
+
+アプリを実行するとき、タスクリストを自動的に入力される。画面の上側に入力欄があある。そこで新しいタスクを入力して、欄の右側に入力ボタンを押すとタスクリストに入力されたタスクを並べられる。
+タスクリストの各タスクはチェックボックスである。このチェックボックスを押すときにプログラムがそのタスクをリストから自動的に消す。また、各タスクの右側には優先順位ラジオボタンを置いてある。このラジオボタンを押すときに見た目で一番重要なタスクが見える。
