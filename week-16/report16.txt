@@ -1,0 +1,166 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ１６　レポート
+1. コマンドライン引数で指定されたファイルを読み込み, そのまま端末ウィンドウ上(標準出力)に表示するプログラムを作成せよ. mainのみで作成して良い. (ソースをレポート) 
+ファイル名：MyCat.java
+import java.io.*;
+public class MyCat {
+    public static void main(String[] args){
+        try {
+            if(args.length == 0) throw new Exception("引数足りない");
+            String fileName = args[0];
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            String buffer;
+            while((buffer = bufferedReader.readLine()) != null){
+                System.out.println(buffer);
+            }
+            bufferedReader.close();
+            fileReader.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+    }
+}
+2. 課題1のプログラムをもとに, ファイルから1行読み込むごとに改行コードを挿入することで, 1つのとても長い文字列を作り, 最後に一度だけprintlnする様に改造せよ. 実行結果は課題1と同じである. (ソースをレポート)
+ファイル名：MyCat2.java
+import java.io.*;
+public class MyCat2 {
+    public static void main(String[] args){
+        try {
+            if(args.length == 0) throw new Exception("引数足りない");
+            String fileName = args[0];
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String buffer;
+            String concat = new String();
+            while((buffer = bufferedReader.readLine()) != null){
+                concat += buffer;
+                concat += System.getProperty("line.separator");
+            }
+            System.out.println(concat);
+            bufferedReader.close();
+            fileReader.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+    }
+}
+3. コマンドライン引数で指定されたファイルを読み込み, 内容をそのまま, 次のコマンドライン引数で指定されたファイルに書き込むプログラムを作成せよ. mainのみで作成して良い. (ソースをレポート) 
+ファイル名：MyCopy.java
+import java.io.*;
+public class MyCopy {
+    public static void main(String[] args){
+        try {
+            if(args.length < 2) throw new Exception("引数足りない");
+            String fileName = args[0];
+            String fileName2 = args[1];
+
+            FileReader fileReader = new FileReader(fileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            //読み込み
+            String buffer;
+            String concat = new String();
+            while((buffer = bufferedReader.readLine()) != null){
+                concat += buffer;
+                concat += System.getProperty("line.separator");
+            }
+
+            //掃除
+            bufferedReader.close();
+            fileReader.close();
+            
+            //書き込み
+            FileWriter fileWrite = new FileWriter(fileName2);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWrite);
+
+            bufferedWriter.write(concat);
+            bufferedWriter.flush();
+
+            //掃除
+            fileWrite.close();
+            bufferedWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+    }
+}
+4. コマンドライン引数で指定されたすべてのファイルを順に読み込み, そのまま端末ウィンドウ上(標準出力)に表示するプログラムを作成せよ. mainのみで作成して良い. (ソースをレポート) 
+ファイル名：MyCopyAll.java
+import java.io.*;
+public class MyCopyAll {
+    public static void main(String[] args){
+        try {
+            if(args.length < 2) throw new Exception("引数足りない");
+            String fileName2 = args[args.length - 1];
+            //読み込み
+            String buffer;
+            String concat = new String();
+
+
+            for(int i = 0; i < args.length - 1; i++){
+                String fileName = args[i];
+                FileReader fileReader = new FileReader(fileName);
+                BufferedReader bufferedReader = new BufferedReader(fileReader);
+                while((buffer = bufferedReader.readLine()) != null){
+                    concat += buffer;
+                    concat += System.getProperty("line.separator");
+                }
+                fileReader.close();
+                bufferedReader.close();
+            }
+
+            FileWriter fileWriter = new FileWriter(fileName2);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(concat);
+            bufferedWriter.flush();
+
+            bufferedWriter.close();
+            fileWriter.close();
+           
+        } catch (Exception e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+    }
+}
+5. ウェブサーバーからテキストファイルを取得して, 内容を端末ウィンドウ上(標準出力)に表示するプログラムを作成せよ. mainのみで作成して良い. (ソースと, ウェブサーバーから読み込んだファイルの内容をレポート) 
+ファイル名：Fetch.java
+import java.net.*;
+import java.io.*;
+public class Fetch {
+    public static void main(String[] args){
+        try {
+            String urlString = "http://jsuri1.info.kushiro-ct.ac.jp/~tenmo/java/hello.txt";
+            URL urlObject = new URL(urlString);
+
+            HttpURLConnection http = (HttpURLConnection)urlObject.openConnection();
+            http.setRequestMethod("GET");
+            http.connect();
+
+            InputStreamReader streamReader = new InputStreamReader(http.getInputStream());
+            BufferedReader bufferedReader = new BufferedReader(streamReader);
+            String buffer;
+            String concat = new String();
+
+            while((buffer = bufferedReader.readLine()) != null){
+                concat += buffer;
+                concat += System.getProperty("line.separator");
+            }
+
+            bufferedReader.close();
+            streamReader.close();
+
+            System.out.println(concat);
+        } catch (Exception e){
+            System.out.println(e);
+            System.exit(1);
+        }
+    }
+}
+読み込んだファイル内容；
+ウェブサーバーからのファイル読込みの成功おめでとう!!

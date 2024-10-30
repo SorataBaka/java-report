@@ -44,7 +44,8 @@ public class Check extends JFrame implements ActionListener{
     a.setVisible(true);
   }
 }
-このソースコードのJCheckBoxというクラスを初期化して、画面の上に立ち上げる。判定ボタン（judge）をクリックするときに、かくチェックボックスを判定する。初期化されたJCheckBoxクラスにはisSelected()という関数がある。この関数はそのチェックボックスの状態にチェックされたかどうか判定出来る。各チェックボックスの状態を合わせて、ターミナル上に出力される文字列を変わる。
+このソースコードのJCheckBoxというクラスを初期化して、画面の上に立ち上げる。判定ボタン（judge）をクリックするときに、かくチェックボックスを判定する。初期化されたJCheckBoxクラスにはisSelected()という関数がある。この関数はそのチェックボックスの状態にチェックされたかどうか判定出来る。チェックボックスクラスにはプライベートなフィールドがあって、そのフィールドはチェックボックスの状態を用いられる。isSelected()関数はゲッターとして、そのフィールドの値を戻す。
+各チェックボックスの状態を合わせて、ターミナル上に出力される文字列を変わる。
 
 2. [練習] 上記のJRadioButtonの例を実際に動作させてみよ. (完成したソース, 仕組みについての考察をレポート)
 ファイル名：Radio.java
@@ -99,7 +100,7 @@ public class Radio extends JFrame implements ActionListener {
     a.setVisible(true);
   }
 }
-ButtonGroupクラスではクラスに追加されたチェックボックスを全部繋げられる。ButtonGroupに含まれたチェックボックスは一つだけ選択出来る。ButtonGroupに含まれないと何個も選できる。
+ButtonGroupクラスにはVector型フィールドが存在している。ButtonGroupクラスのadd()関数を呼び出すときに、渡されたラジオボタンクラスをVectorに追加する。最初の状態は全ラジオボタンがチェックされていない状態とする。ButtonGroupに含まれたラジオボタンを押されたときに、ButtonGroupクラスが自動的に制御する。押されていないラジオボタンがチェックしている状態があれば、それを自動的に非チェックされて、押されたラジオボタンの状態をチェックしているになる。
 
 3. JCheckBoxとJRadioButtonを両方用いて, 自由にGUIプログラムを作成せよ. (ソース, 使用方法をレポート)
 ファイル名：CheckFrame.java
