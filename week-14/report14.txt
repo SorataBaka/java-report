@@ -1,2 +1,254 @@
 ４J　２４番　クリスティアン　ハルジュノ　テーマ１４　レポート
 
+１．【練習】JFrameとJPanel, FlowLayoutを利用し, 三つ以上の適当な部品(ボタンやラベルなど)を配置するプログラムを作成せよ. ファイル名はFlowFrame.javaとせよ. (ソースをレポート)
+ファイル名：FlowFrame.java
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class FlowFrame extends JFrame implements ActionListener {
+    private JButton addButton;
+    private JButton removeButton;
+    private JLabel label;
+
+    private int counter;
+
+    public FlowFrame(){
+        super();
+        Container container = super.getContentPane();
+        this.counter = 0;
+
+        this.label = new JLabel("" + this.counter);
+        this.addButton = new JButton("足");
+        this.removeButton = new JButton("減");
+
+        this.addButton.addActionListener(this);
+        this.removeButton.addActionListener(this);
+
+        JPanel panel = new JPanel();
+        FlowLayout mainFlow = new FlowLayout();
+        panel.setLayout(mainFlow);
+        panel.add(this.addButton);
+        panel.add(this.label);
+        panel.add(this.removeButton);
+        container.add(panel);
+    }
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == this.addButton){
+            this.label.setText("" + ++this.counter);
+        }
+
+        if(e.getSource() == this.removeButton){
+            this.label.setText("" + --this.counter);
+        }
+    }
+    public static void main(String[] args){
+        FlowFrame a = new FlowFrame();
+        a.setSize(1280, 720);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+
+
+}
+FlowLayoutとはHTMLのDisplay inlineと同じ様に、  子コンポーネントを横に並べてフレームの端に着いたら、次の行に並べます。並び順番はソースコードに追加される順に立ちます。このメソッドの特徴はウィンドウサイズを変更されると並び順が自動的に変われます。
+
+２．【練習】JFrameとJPanel, BorderLayoutを利用し, 三つ以上の適当な部品を配置するプログラムを作成せよ. ファイル名はBorderFrame.javaとせよ. (ソース, どこにどうやって何を配置したか, をレポート)
+ファイル名：BorderFrame.java
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class BorderFrame extends JFrame implements ActionListener {
+    private JButton addButton;
+    private JButton removeButton;
+    private JLabel label;
+
+    private Font font;
+
+    private int counter;
+
+    public BorderFrame(){
+        super();
+        Container container = super.getContentPane();
+        this.counter = 0;
+
+        this.label = new JLabel("" + this.counter);
+        this.addButton = new JButton("足");
+        this.removeButton = new JButton("減");
+        this.font = new Font("Serif", Font.PLAIN, 30);
+
+        this.addButton.setFont(this.font);
+        this.removeButton.setFont(this.font);
+        this.label.setFont(this.font);
+
+        this.addButton.addActionListener(this);
+        this.removeButton.addActionListener(this);
+
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel panel = new JPanel();
+        BorderLayout mainFlow = new BorderLayout();
+        panel.setLayout(mainFlow);
+        panel.add(this.addButton, BorderLayout.WEST);
+        panel.add(this.label, BorderLayout.CENTER);
+        panel.add(this.removeButton, BorderLayout.EAST);
+        container.add(panel);
+    }
+    public void actionPerformed(ActionEvent e){
+        if(e.getSource() == this.addButton){
+            this.label.setText("" + ++this.counter);
+        }
+
+        if(e.getSource() == this.removeButton){
+            this.label.setText("" + --this.counter);
+        }
+    }
+    public static void main(String[] args){
+        BorderFrame a = new BorderFrame();
+        a.setSize(1280, 720);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+
+
+}
+BorderLayoutはHTMLのDisplay Grid　と似ています。この並び方はフレームの端っこに立ち上げられます。どこの端っこに立ち上げられるかというと、BorderLayoutは風向システムを使用しています（北西東南）。子コンポーネントを追加するときに、同時に、どの端っこを入れます。西だとフレームの左端っこ。南だとフレームの下端っこ。
+
+３．【入れ子の練習】複数のパネルとレイアウトマネージャを「入れ子」で組み合わせた複雑なウィンドウを作成せよ. ファイル名はComplexFrame.javaとせよ. (ソース, どこにどうやって何を配置したか, をレポート)
+ファイル名：ComplexFrame.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+import java.util.Arrays;
+
+public class ComplexFrame extends JFrame implements ActionListener {
+    private JButton[] menu = new JButton[10];
+    private DefaultListModel<String> orders;
+    private JList<String> ordersPanel;
+    private JButton clearOrder;
+
+    public ComplexFrame(){
+        super();
+        Container container = this.getContentPane();
+        this.initializeMenu();
+
+        JPanel menuPanel = new JPanel();
+        menuPanel.setPreferredSize(new Dimension(780, 1000));
+        menuPanel.setLayout(new FlowLayout());
+        for(int i = 0; i < 10; i++) menuPanel.add(this.menu[i]);
+
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BorderLayout());
+
+        this.orders = new DefaultListModel<String>();
+        this.ordersPanel =  new JList<String>(this.orders);
+        this.ordersPanel.setFont(new Font("Callibri", Font.PLAIN, 30));
+        this.ordersPanel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.ordersPanel.setVisibleRowCount(10);
+        this.ordersPanel.setPreferredSize(new Dimension(500, 450));
+
+        this.clearOrder = new JButton("会計");
+        this.clearOrder.addActionListener(this);
+        this.clearOrder.setPreferredSize(new Dimension(500, 200));
+
+        rightPanel.add(this.ordersPanel, BorderLayout.NORTH);
+        rightPanel.add(this.clearOrder, BorderLayout.SOUTH);
+        
+        JPanel completePanel = new JPanel();
+        completePanel.setLayout(new BorderLayout());
+        completePanel.add(menuPanel, BorderLayout.WEST);
+        completePanel.add(rightPanel, BorderLayout.EAST);
+
+
+        container.add(completePanel);
+    }
+    private void initializeMenu(){
+        this.menu[0] = new JButton("炙りダブり");
+        this.menu[1] = new JButton("スパチキ");
+        this.menu[2] = new JButton("ハンバーガー");
+        this.menu[3] = new JButton("DCB");
+        this.menu[4] = new JButton("ポテト");
+        this.menu[5] = new JButton("TMB");
+        this.menu[6] = new JButton("テリCFO");
+        this.menu[7] = new JButton("マックチキン");
+        this.menu[8] = new JButton("チキチー");
+        this.menu[9] = new JButton("チーズＢ");
+        for(int i = 0; i < 10; i++){
+            this.menu[i].setPreferredSize(new Dimension(150, 150));
+            this.menu[i].addActionListener(this);
+        }
+    }
+    public void actionPerformed(ActionEvent e){
+        if(Arrays.asList(this.menu).contains(e.getSource())){
+            JButton eventButton = (JButton)e.getSource();
+            this.orders.addElement(eventButton.getText());
+        }
+        if(e.getSource() == (this.clearOrder)){
+            this.orders.clear();
+        }
+    }
+    public static void main(String[] args){
+        ComplexFrame a = new ComplexFrame();yokoあｓｄasda  
+        a.setSize(1280, 720);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
+
+まず、画面の上に２つのコンポーネントがあって、メニュー画面と注文画面である。この２つは絶対に左と右の端っこに配置するので、BorderFrameを使用してメニュー画面を西、注文画面を東とする。
+メニュー画面にはボタンしかありません。各商品の名前を文字列として各ボタンの上においてある。全ボタンをそのまま横に並びたいので、FlowLayoutを使用する。
+注文画面には注文（押す）された商品を表示する。商品ボタンを押すときに、商品の名前を文字列の配列に入れます。この配列の内容を縦に並ぶ。
+また、リストのしたに、会計ボタンを配置してボタンを押すと配列の内容を消す。この２つのアイテムが  BorderLayoutを使って注文リストを北において、会計ボタンを南に置く。
+
+４．【調査報告】FlowLayoutやBorderLayoutの他に, どのようなレイアウトマネージャーがあるか, 調査して実行して報告せよ. レポートには必ず引用元(書籍情報やウェブサイト名, URLなど)も示すこと. (レイアウトマネージャの名前, レイアウトマネージャの機能, 実行したソースをレポート)
+名前：GridLayout
+機能：この設計はHTMLのDisplay Gridと同じように、画面の上に行列を立て小コンポーネントを各セルに配置する設計です。配列の行と列の長さはLayoutを初期化するときに設定出来ることです。(https://www.javatpoint.com/GridLayout, https://docs.oracle.com/javase/jp/8/docs/api/java/awt/GridLayout.html)。長さによって、全セルをウィンドウのサイズに従って、自動的にレサイズされる。
+ソースコード：
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class GridFrame extends JFrame implements ActionListener {
+    private JButton[] menu = new JButton[10];
+
+    public GridFrame(){
+        super();
+        Container container = this.getContentPane();
+        this.initializeMenu();
+        container.setLayout(new GridLayout(5, 2));
+        container.setSize(new Dimension(700, 700));
+        for(int i = 0; i < 10; i++){
+          container.add(menu[i]);
+        }
+    }
+    private void initializeMenu(){
+        this.menu[0] = new JButton("炙りダブり");
+        this.menu[1] = new JButton("スパチキ");
+        this.menu[2] = new JButton("ハンバーガー");
+        this.menu[3] = new JButton("DCB");
+        this.menu[4] = new JButton("ポテト");
+        this.menu[5] = new JButton("TMB");
+        this.menu[6] = new JButton("テリCFO");
+        this.menu[7] = new JButton("マックチキン");
+        this.menu[8] = new JButton("チキチー");
+        this.menu[9] = new JButton("チーズＢ");
+        for(int i = 0; i < 10; i++){
+            this.menu[i].setPreferredSize(new Dimension(150, 150));
+            this.menu[i].addActionListener(this);
+        }
+    }
+    public void actionPerformed(ActionEvent e){
+
+    }
+    public static void main(String[] args){
+        GridFrame a = new GridFrame();
+        a.setSize(1280, 720);
+        a.setLocation(0, 0);
+        a.setVisible(true);
+    }
+}
