@@ -1,0 +1,199 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ１９　レポート
+1. 上記「マウス操作によるグラフィックス描画」の例を実際に動作させ, マウスでクリックした位置に, スタンプの様に図形が描かれるプログラムを作成せよ. (ソースをレポート)
+ファイル名：PressApp.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+class GraphicsPanel extends JPanel implements MouseListener {
+    public GraphicsPanel(int panelWidth, int panelHeight){
+        this.setBackground(Color.black);
+        this.setPreferredSize(new Dimension(panelWidth, panelHeight));
+        this.addMouseListener(this);
+    }
+    public void mousePressed(MouseEvent e){
+        int x = e.getX();
+        int y = e.getY();
+        System.out.println(x + " " + y);
+
+        Graphics g = this.getGraphics();
+        g.setColor(Color.green);
+        g.drawLine(x - 10, y - 10, x + 10, y + 10);
+        g.drawLine(x + 10, y - 10, x - 10, y + 10);
+        g.dispose();   
+    }
+    public void mouseReleased(MouseEvent e){
+
+    }
+    public void mouseClicked(MouseEvent e){
+
+    }
+    public void mouseEntered(MouseEvent e){
+        
+    }
+    public void mouseExited(MouseEvent e){
+
+    }
+}
+public class PressApp extends JFrame {
+    private GraphicsPanel gpanel;
+
+    public PressApp(){
+        super();
+        Container container = this.getContentPane();
+        this.gpanel = new GraphicsPanel(1000, 500);
+        container.add(this.gpanel);
+
+    }
+
+    public static void main(String[] args){
+        PressApp control = new PressApp();
+        control.setVisible(true);
+        control.setLocation(0, 0);
+        control.setExtendedState(Frame.MAXIMIZED_BOTH);
+    }
+}
+
+2. ドラッグで線を途切れることなく引けるプログラムを作成せよ. (ソースをレポート)
+ファイル名：DragApp.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+
+
+class GraphicsPanel extends JPanel implements MouseMotionListener{
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
+    public GraphicsPanel(){
+        super.setBackground(Color.black);
+        this.addMouseMotionListener(this);
+        this.startX = this.startY = this.endX = this.endY = 0;
+    }
+    public void drawDot(){
+        Graphics g = this.getGraphics();
+        g.setColor(Color.green);
+        g.drawLine(this.startX, this.startY, this.endX, this.endY);
+        g.dispose();
+    }
+    public void mouseMoved(MouseEvent e){
+        this.endX = e.getX();
+        this.endY = e.getY();
+
+    }
+    public void mouseDragged(MouseEvent e){
+        this.startX = this.endX;
+        this.startY = this.endY;
+        this.endX = e.getX();
+        this.endY = e.getY();
+        this.drawDot();
+    }
+    public void mousePressed(MouseEvent e){
+
+    }
+    public void mouseReleased(MouseEvent e){
+
+    }
+    public void mouseClicked(MouseEvent e){
+
+    }
+    public void mouseEntered(MouseEvent e){
+
+    }
+    public void mouseExited(MouseEvent e){
+
+    }
+}
+public class DragApp extends JFrame {
+    private GraphicsPanel gpanel;
+    public DragApp(){
+        super();
+        this.gpanel = new GraphicsPanel();
+        this.getContentPane().add(this.gpanel);
+    }
+    public static void main(String[] args){
+        DragApp control = new DragApp();
+        control.setVisible(true);
+        control.setLocation(0, 0);
+        control.setExtendedState(Frame.MAXIMIZED_BOTH);
+        control.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+
+3. 課題2のプログラムを, ダブルバッファ方式に改造せよ. 必ず課題2とは分けてレポートすること. (プログラムの修正箇所(どこを)と, 修正内容(どの様に)をレポート)
+ファイル名：BufferApp.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+
+
+class GraphicsPanel extends JPanel implements MouseMotionListener{
+    private int startX;
+    private int startY;
+    private int endX;
+    private int endY;
+    private BufferedImage canvas;
+    public GraphicsPanel(int width, int height){
+        super.setBackground(Color.black);
+        this.addMouseMotionListener(this);
+        this.startX = this.startY = this.endX = this.endY = 0;
+        this.canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    }
+    public void drawDot(){
+        Graphics g = this.canvas.getGraphics();
+        g.setColor(Color.green);
+        g.drawLine(this.startX, this.startY, this.endX, this.endY);
+        g.dispose();
+
+        this.getGraphics().drawImage(this.canvas, 0, 0, null);
+    }
+    public void mouseMoved(MouseEvent e){
+        this.endX = e.getX();
+        this.endY = e.getY();
+
+    }
+    public void mouseDragged(MouseEvent e){
+        this.startX = this.endX;
+        this.startY = this.endY;
+        this.endX = e.getX();
+        this.endY = e.getY();
+        this.drawDot();
+    }
+    public void mousePressed(MouseEvent e){
+
+    }
+    public void mouseReleased(MouseEvent e){
+
+    }
+    public void mouseClicked(MouseEvent e){
+
+    }
+    public void mouseEntered(MouseEvent e){
+
+    }
+    public void mouseExited(MouseEvent e){
+
+    }
+}
+public class BufferApp extends JFrame {
+    private GraphicsPanel gpanel;
+    public BufferApp(){
+        super();
+        this.gpanel = new GraphicsPanel(1920, 1080);
+        this.getContentPane().add(this.gpanel);
+    }
+    public static void main(String[] args){
+        BufferApp control = new BufferApp();
+        control.setVisible(true);
+        control.setLocation(0, 0);
+        control.setExtendedState(Frame.MAXIMIZED_BOTH);
+        control.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+
+4. 課題3のプログラムをさらに改良し, マウス操作で絵を描けるプログラムを, 各自の自由な発想で作成せよ. 筆の色や太さが切り替えられたり, 筆を図形や画像によるスタンプに切り替えできたり, 乱数を用いてスプレーが作成できると素晴らしい. (ソース, 使用方法をレポート) 
+ファイル名：
+
