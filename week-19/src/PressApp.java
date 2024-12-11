@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.*;
 import java.awt.event.*;
 class GraphicsPanel extends JPanel implements MouseListener {
     public GraphicsPanel(int panelWidth, int panelHeight){
