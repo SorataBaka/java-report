@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 class MainPanel extends JPanel {
     private Image character;
     public MainPanel(Image character, int width, int height){
@@ -12,7 +14,7 @@ class MainPanel extends JPanel {
 }
 public class DvdBounce extends JFrame {
     private MainPanel mainPanel;
-    public void DvdBounce(){
+    public DvdBounce(){
         Toolkit tk = Toolkit.getDefaultToolkit();
         MediaTracker tracker = new MediaTracker(this);
         Image character = tk.getImage("../petting-cat-greg.gif");

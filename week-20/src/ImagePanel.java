@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 class CustomPanel extends JPanel{
     private Image image;
     public CustomPanel(Image image){
