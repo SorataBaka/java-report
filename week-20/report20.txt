@@ -1,0 +1,148 @@
+４J　２４番　クリスティアン　ハルジュノ　テーマ２０　レポート
+1. Timerクラスを用いて, 1秒ごとにpaintComponentメソッドが呼び出されるプログラムを作成せよ. テーマ18の課題1のプログラムに, 上記のTimerクラスの説明のサンプルコードを組み込んで作成すると良い. paintComponentメソッドの中にSystem.out.printlnを入れて何か文字列を表示し, そこが繰り返し実行されていることを確認すること. (ソースをレポート)
+ファイル名: MyPanel.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+//Given that a ball is being dropped down from the air. 
+
+public class MyPanel extends JPanel implements ActionListener {
+    private Timer timer;
+    private double g;
+    private int t;
+    public MyPanel(){
+        super.setBackground(Color.black);
+        super.setPreferredSize(new Dimension(1000, 1000));
+        this.timer = new Timer(50, this);
+        this.timer.start();
+        this.g = 2;
+        this.t = 0;
+    }
+    private int yPosition(int t){ // position in pixel
+        double result = this.getHeight() - ((g * Math.pow(t, 2)) / 2);
+        return this.getHeight() - (int)Math.abs(result) - 100;
+    }
+    public void actionPerformed(ActionEvent e){
+        this.repaint();
+        Toolkit.getDefaultToolkit().sync();
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        System.out.println("paintComponent実行");
+        g.setColor(Color.green);
+        if(this.t > 50) this.t = 0;
+        g.drawOval(getWidth()/2 ,this.yPosition(t++), 100, 100);
+    }
+}
+ファイル名: MyFrame.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MyFrame extends JFrame {
+    private MyPanel mp;
+    public MyFrame(){
+        this.mp = new MyPanel();
+        JPanel panel1 = new JPanel();
+        panel1.add(this.mp);
+        super.getContentPane().add(panel1);
+    }
+    public static void main(String[] args){
+        MyFrame frame = new MyFrame();
+        frame.setVisible(true);
+        frame.setLocation(0, 0);
+        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+    }
+}
+
+2. 画像ファイルを一つ読み込み, 描画パネル内の適当な固定位置に, その画像を描画するプログラムを作成せよ. (ソースをレポート) 
+ファイル名：ImagePanel.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+class CustomPanel extends JPanel{
+    private Image image;
+    public CustomPanel(Image image){
+        super();
+        this.image = image;
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.drawImage(this.image, 0, 0, this);
+    }
+}
+public class ImagePanel extends JFrame {
+    private CustomPanel customPanel;
+    public ImagePanel(){
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        MediaTracker tracker = new MediaTracker(this);
+        Image chara = tk.getImage("../petting-cat-greg.gif");
+        tracker.addImage(chara, 0);
+        try {
+            tracker.waitForAll();
+        } catch (Exception ex){
+            System.exit(1);
+        }
+        this.customPanel = new CustomPanel(chara);
+        super.getContentPane().add(this.customPanel);
+    }
+    public static void main(String[] args){
+        ImagePanel newPanel = new ImagePanel();
+        newPanel.setVisible(true);
+        newPanel.setLocation(0, 0);
+        newPanel.setExtendedState(Frame.MAXIMIZED_BOTH);
+    }
+}
+イメージ
+https://media.tenor.com/3GavnPaMw60AAAAj/petting-cat-greg.gif
+
+3. 画像ファイルを複数読み込み, 適当な固定位置に, それぞれ位置をずらして全て描画するプログラムを作成せよ. 画像の一覧を静止画表示するということである. 複数の画像は配列を用いてまとめて扱うこと. (ソースをレポート) 
+ファイル名: MultiImage.java
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+class CustomPanel extends JPanel{
+    private Image image1;
+    private Image image2;
+    private Image image3;
+    public CustomPanel(Image image1, Image image2, Image image3){
+        super();
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.drawImage(this.image1, 0, 200, this);
+        g.drawImage(this.image2, 400, 200, this);
+        g.drawImage(this.image3, 800, 0, this);
+    }
+}
+public class MultiImage extends JFrame {
+    private CustomPanel customPanel;
+    public MultiImage(){
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        MediaTracker tracker = new MediaTracker(this);
+        Image chara1 = tk.getImage("../1.gif");
+        Image chara2 = tk.getImage("../2.gif");
+        Image chara3 = tk.getImage("../3.gif");
+        tracker.addImage(chara1, 0);
+        tracker.addImage(chara1, 1);
+        tracker.addImage(chara1, 2);
+        try {
+            tracker.waitForAll();
+        } catch (Exception ex){
+            System.exit(1);
+        }
+        this.customPanel = new CustomPanel(chara1, chara2, chara3);
+        super.getContentPane().add(this.customPanel);
+    }
+    public static void main(String[] args){
+        MultiImage newPanel = new MultiImage();
+        newPanel.setVisible(true);
+        newPanel.setLocation(0, 0);
+        newPanel.setExtendedState(Frame.MAXIMIZED_BOTH);
+    }
+}
+
